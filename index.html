@@ -298,14 +298,13 @@ window.PizarraCalc = (function(){
     return h.toString(36);
   }
   function huellaJornada(jornada){
-    const base = JSON.stringify((jornada.dives || []).map(s => [s.fecha, s.punto, s.prof, s.tfondo, s.intervalo, s.rumboIda, s.guiaIda, s.guiaVuelta, s.briefing, s.reserva, s.regla, s.ruta || '', ...(s.planner ? [s.planner] : [])]));
+    const base = JSON.stringify((jornada.dives || []).map(s => [s.fecha, s.punto, s.prof, s.tfondo, s.intervalo, s.rumboIda, s.guiaIda, s.guiaVuelta, s.briefing, s.reserva, s.regla, s.ruta || '']));
     let h = 5381; for (let i = 0; i < base.length; i++) h = ((h << 5) + h + base.charCodeAt(i)) >>> 0;
     return h.toString(36);
   }
   const FORMULARIO_URL = 'https://dmartsar.github.io/ficha-b3e/';
   function enlaceFicha(jornada){
-    const payload = { codigo:huellaJornada(jornada).toUpperCase(), dives:(jornada.dives || []).map(s => ({ fecha:s.fecha, punto:s.punto, prof:s.prof, tfondo:s.tfondo, intervalo:s.intervalo,
-      ...(s.planner ? {perfil:{gfLow:s.planner.gfLow,gfHigh:s.planner.gfHigh,tramos:(s.planner.segments||[]).map(r=>({depth:r.depth,minutes:r.minutes,o2:s.planner.gases?.[r.gas]?.o2??null}))}} : {}) })) };
+    const payload = { codigo:huellaJornada(jornada).toUpperCase(), dives:(jornada.dives || []).map(s => ({ fecha:s.fecha, punto:s.punto, prof:s.prof, tfondo:s.tfondo, intervalo:s.intervalo })) };
     let bin = ''; new TextEncoder().encode(JSON.stringify(payload)).forEach(b => { bin += String.fromCharCode(b); });
     return FORMULARIO_URL + '#plan=' + btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   }
@@ -464,8 +463,7 @@ window.PizarraCalc = (function(){
     const pendientesEquipo = EQUIPO.filter(k => st.equipo?.[k] !== true);
     $('equipoResumen').textContent = `${EQUIPO.length-pendientesEquipo.length}/${EQUIPO.length} comprobados${pendientesEquipo.length ? ' · pendiente: '+pendientesEquipo.join(', ') : ' · equipo mínimo declarado completo'}.`;
     $('equipoResumen').className = 'res '+(pendientesEquipo.length ? 'todo' : 'ok');
-    $('planResumen').textContent = planCompartido ? planCompartido.dives.map((p,i) => `${i+1}.ª: ${p.punto || 'punto pendiente'} · ${p.prof ?? '—'} m · fondo ${p.tfondo ?? '—'} min${i===1 ? ' · intervalo ' + (p.intervalo ?? '—') + ' min' : ''}`+
-      (p.perfil ? `\nSimulación experimental GF ${p.perfil.gfLow}/${p.perfil.gfHigh}. Tramos del buceador de referencia (no son tu gas ni tu botella):\n`+(Array.isArray(p.perfil.tramos)?p.perfil.tramos:[]).slice(0,30).map(r=>`${r.depth ?? '—'} m · ${r.minutes ?? '—'} min · ${r.o2 ?? '—'} % O₂`).join('\n')+'\nConsulta en WhatsApp el ascenso y las paradas simuladas; no es una tabla operativa.' : '')).join('\n\n') : 'Recibirás el plan de las dos inmersiones en el grupo. El enlace del plan rellenará aquí sus datos y su código.';
+    $('planResumen').textContent = planCompartido ? planCompartido.dives.map((p,i) => `${i+1}.ª: ${p.punto || 'punto pendiente'} · ${p.prof ?? '—'} m · fondo ${p.tfondo ?? '—'} min${i===1 ? ' · intervalo ' + (p.intervalo ?? '—') + ' min' : ''}`).join('\n\n') : 'Recibirás el plan de las dos inmersiones en el grupo. El enlace del plan rellenará aquí sus datos y su código.';
     $('planResumen').style.whiteSpace = 'pre-line';
     const res = saludResultado(st.salud, SALUD_CUADROS);
     const r = $('resultado');
