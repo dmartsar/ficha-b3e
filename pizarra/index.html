@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0F1719">
-<title>Pizarra de plan B3E</title>
+<title>Plan y fichas de buceo · B3E</title>
 <script>
 // Solo en la versión publicada (https): manifiesto para instalarla como app. Abierta como archivo local no hace nada.
 if (location.protocol === 'https:') {
@@ -130,7 +130,7 @@ footer{color:var(--muted);font-size:12.5px;max-width:90ch}
 
 <div class="wrap">
   <header>
-    <h1>Pizarra de plan · B3E <small id="ver" style="font:12px var(--f-mono);color:var(--muted)"></small></h1>
+    <h1>Plan y fichas de buceo · B3E <small id="ver" style="font:12px var(--f-mono);color:var(--muted)"></small></h1>
     <p id="net" style="margin:6px 0 0;font:12px var(--f-mono);color:var(--ok)"></p>
     <p>Plan de inmersión desde barco con las reglas del curso y del Real Decreto 550/2020 ya cargadas. Rellena lo tuyo, mira las comprobaciones y copia el plan al grupo de WhatsApp.</p>
     <div class="law" aria-label="Reglas precargadas">
@@ -244,7 +244,7 @@ footer{color:var(--muted);font-size:12.5px;max-width:90ch}
   </footer>
 </div>
 
-<script>window.PIZARRA_VERSION = '1.13.0';</script>
+<script>window.PIZARRA_VERSION = '1.14.0';</script>
 <script id="calc">
 /* Cálculos puros de la pizarra. Sin DOM: los prueba tests/calc.test.mjs. Si cambias algo aquí, actualiza los tests. */
 window.PizarraCalc = (function(){
@@ -871,7 +871,7 @@ window.PizarraCalc = (function(){
       } catch(err) { malos++; }
     }
     e.target.value = ''; s.ejemplo = false; save(); $('rows').innerHTML = ''; render();
-    $('pairmsg').textContent = `Fichas importadas: ${n}` + (malos ? ` · ${malos} archivo(s) no eran fichas de la pizarra` : '') + '.';
+    $('pairmsg').textContent = `Fichas importadas: ${n}` + (malos ? ` · ${malos} archivo(s) no eran fichas de este programa` : '') + '.';
   });
   function anadirFichas(lista){
     const s = D(), h = huellaJornada(state), fondoPrimera = state.dives[0].tfondo; let n = 0;
@@ -918,7 +918,7 @@ window.PizarraCalc = (function(){
     const fila = (txt, v) => `<tr><td>${esc(txt)}</td><td class="r ${v === 'si' ? 'si' : ''}">${v === 'si' ? 'Sí' : v === 'no' ? 'No' : '—'}</td></tr>`;
     const bloques = s.divers.map(d => {
       const sal = d.salud || {}, e = estadoFicha(d, s);
-      if (!sal.q1) return `<section><h2>${esc(d.n)}</h2><p>Resultado recibido: <b>${esc(e.resultado)}</b>${sal.fecha ? ' (' + esc(sal.fecha) + ')' : ''}. No hay respuestas detalladas en esta pizarra.</p></section>`;
+      if (!sal.q1) return `<section><h2>${esc(d.n)}</h2><p>Resultado recibido: <b>${esc(e.resultado)}</b>${sal.fecha ? ' (' + esc(sal.fecha) + ')' : ''}. No hay respuestas detalladas en este programa.</p></section>`;
       let filas = '';
       SALUD_PREG.forEach((t, k) => { const n = k + 1, c = SALUD_CUADRO[n]; filas += fila(n + '. ' + t, sal['q'+n]);
         if (c && sal['q'+n] === 'si') SALUD_CUADROS[c].forEach((tt, m) => filas += fila('Cuadro ' + c + ': ' + tt, sal[c+(m+1)])); });
@@ -931,7 +931,7 @@ window.PizarraCalc = (function(){
 <style>body{font:14px/1.45 system-ui,Segoe UI,sans-serif;max-width:800px;margin:24px auto;padding:0 16px;color:#111}h1{font-size:22px}h2{font-size:17px;margin:0 0 4px}section{border:1px solid #bbb;border-radius:6px;padding:12px;margin:14px 0;break-inside:avoid}table{border-collapse:collapse;width:100%;margin-top:6px}td{border-top:1px solid #ddd;padding:4px 6px;vertical-align:top}td.r{width:44px;text-align:center;font-weight:700}td.si{color:#b00}.pr{font-size:11px;background:#fe8;padding:1px 6px;border-radius:3px}p{margin:2px 0}</style></head><body>
 <h1>Declaraciones de salud · ${esc(s.punto || '')} · ${esc(new Date(f + 'T12:00').toLocaleDateString('es-ES'))}</h1>
 <p>Cuestionario del anexo I del Real Decreto 550/2020 (art. 8). Datos de salud: guárdalo solo el tiempo necesario y no lo compartas fuera del centro u organización responsable.</p>
-${bloques}<p style="color:#666;font-size:12px">Generado con la Pizarra de plan B3E v${window.PIZARRA_VERSION} el ${new Date().toLocaleString('es-ES')}.</p></body></html>`;
+${bloques}<p style="color:#666;font-size:12px">Generado con Plan y fichas de buceo · B3E v${window.PIZARRA_VERSION} el ${new Date().toLocaleString('es-ES')}.</p></body></html>`;
     const blob = new Blob([html], {type:'text/html'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `declaraciones_salud_${f}_${(s.punto||'punto').replace(/[^\w\u00C0-\u017F]+/g,'-')}.html`; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
     $('pairmsg').textContent = 'Declaraciones descargadas. Ábrelas en el navegador para imprimirlas o guardarlas en PDF.';
