@@ -1,0 +1,16 @@
+{
+  "name": "Pizarra de plan B3E",
+  "short_name": "Pizarra B3E",
+  "description": "Planificación de inmersiones recreativas desde barco (curso B3E). Funciona sin conexión; los datos se guardan solo en este dispositivo.",
+  "lang": "es-ES",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0F1719",
+  "theme_color": "#0F1719",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

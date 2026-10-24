@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1719">
+<title>Pizarra de plan B3E</title>
+<script>
+// Solo en la versión publicada (https): manifiesto para instalarla como app. Abierta como archivo local no hace nada.
+if (location.protocol === 'https:') {
+  [['manifest','manifest.webmanifest'],['icon','icon-192.png'],['apple-touch-icon','icon-192.png']].forEach(([rel, href]) => { const l = document.createElement('link'); l.rel = rel; l.href = href; document.head.appendChild(l); });
+}
+</script>
+<style>
+/* Layout: una "pizarra de buceo" — encabezado de reglas legales, formulario por bloques, resumen fijo de comprobaciones y texto para WhatsApp */
+:root{
+  --bg:#0F1719; --slate:#172225; --ink:#E4ECEB; --muted:#9DB0B1; --line:#2C3B3E;
+  --accent:#4FB3BA; --accent-ink:#0F1719; --warn:#E3B04B; --warn-bg:#3A2F17; --bad:#F08A73; --bad-bg:#3D1F19; --ok:#6CC490; --ok-bg:#16301F;
+  --mark:#F2C230;
+  --f-display:"Bahnschrift","Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Segoe UI","Atkinson Hyperlegible",system-ui,-apple-system,sans-serif;
+  --f-mono:Consolas,"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:18px}
+header h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4vw,40px);letter-spacing:.01em;margin:0;text-wrap:balance}
+header p{margin:4px 0 0;color:var(--muted);max-width:70ch}
+.law{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.law span{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);background:var(--slate);padding:4px 8px;border-radius:4px}
+.law b{color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+section.card{background:var(--slate);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:12px;min-width:0}
+h2{font-family:var(--f-display);font-weight:600;font-size:21px;letter-spacing:.02em;margin:0;display:flex;align-items:baseline;gap:8px}
+h2 small{font-family:var(--f-body);font-size:12px;color:var(--muted);font-weight:400;letter-spacing:0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:600 15px var(--f-display);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);background:var(--slate);color:var(--ink);padding:8px 14px;border-radius:4px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label{display:grid;gap:4px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+input,select{font:15px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:7px 8px;width:100%;min-width:0}
+input[type=number]{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.divers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;align-items:start}
+.diver{border:1px solid var(--line);border-radius:5px;padding:10px;display:grid;gap:8px;align-content:start;background:var(--bg);min-width:0}
+.diver .top{display:grid;grid-template-columns:minmax(0,1fr) 70px auto;gap:6px;align-items:end}
+.diver .f{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:6px}
+.diver input{background:var(--slate)}
+.diver .outs{display:flex;flex-wrap:wrap;gap:4px 10px;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums;border-top:1px dashed var(--line);padding-top:7px}
+.diver .outs b{font-weight:600}
+.diver details{border-top:1px dashed var(--line);padding-top:7px}
+.diver summary{cursor:pointer;font:600 15px var(--f-display);letter-spacing:.04em;text-transform:uppercase;color:var(--accent);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.diver .chips{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font:700 10.5px var(--f-mono);padding:2px 6px;border-radius:3px;text-transform:uppercase;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.warn{background:var(--warn-bg);color:var(--warn)} .tag.bad{background:var(--bad-bg);color:var(--bad)} .tag.todo{background:var(--line);color:var(--ink)}
+.ficha{display:grid;gap:10px;margin-top:8px}
+.ficha h4{margin:4px 0 0;font:700 12px var(--f-body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
+.q .yn{display:flex;gap:8px;white-space:nowrap}
+.q .yn label{display:flex;gap:3px;align-items:center;text-transform:none;letter-spacing:0;font-weight:400;font-size:13px;color:var(--ink)}
+.q .yn input{width:auto}
+.cuadro{margin:2px 0 6px 12px;padding-left:10px;border-left:3px solid var(--mark)}
+.cuadro .q{font-size:12.5px}
+.inline{display:flex;gap:8px;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:400;font-size:13.5px;color:var(--ink)}
+.inline input{width:auto;margin-top:3px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-variant-numeric:tabular-nums}
+th{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:bottom}
+td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+td input,td select{padding:5px 6px}
+td.out{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
+.rm{border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px;padding:2px 6px}
+.btn{font:600 15px var(--f-display);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:8px 14px;border-radius:4px;cursor:pointer;justify-self:start}
+.btn.ghost{background:transparent;color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.checks{display:grid;gap:6px}
+.chk{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:8px 10px;border-radius:4px;border-left:4px solid var(--line);background:var(--bg)}
+.chk .pill{font:700 11px var(--f-mono);padding:2px 6px;border-radius:3px;text-transform:uppercase;white-space:nowrap}
+.chk.ok{border-left-color:var(--ok)} .chk.ok .pill{background:var(--ok-bg);color:var(--ok)}
+.chk.warn{border-left-color:var(--warn)} .chk.warn .pill{background:var(--warn-bg);color:var(--warn)}
+.chk.bad{border-left-color:var(--bad)} .chk.bad .pill{background:var(--bad-bg);color:var(--bad)}
+.chk.todo{border-left-color:var(--muted)} .chk.todo .pill{background:var(--line);color:var(--ink)}
+.chk p{margin:0;font-size:13.5px}
+.chk p small{display:block;color:var(--muted);font-size:12px}
+.boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 14px}
+.boxes label{display:flex;gap:8px;align-items:flex-start;text-transform:none;letter-spacing:0;font-weight:400;font-size:14px;color:var(--ink)}
+.boxes input{width:auto;margin-top:3px}
+.note{border-left:4px solid var(--mark);background:var(--bg);padding:8px 12px;font-size:13.5px;margin:0}
+.point-map{margin:2px 0 0;display:grid;gap:4px;max-width:680px}
+.point-map img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+.point-map figcaption{font-size:11.5px;color:var(--muted);line-height:1.35}
+pre#wa{white-space:pre-wrap;font:13px/1.5 var(--f-mono);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px;margin:0;max-height:360px;overflow:auto}
+.sticky{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:900px){.sticky{position:static}}
+.ex{font:700 11px var(--f-mono);color:var(--warn);background:var(--warn-bg);padding:2px 6px;border-radius:3px}
+footer{color:var(--muted);font-size:12.5px;max-width:90ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.mbar{display:none}
+@media (max-width:640px){
+  body{font-size:16px;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  input,select{font-size:16px;min-height:44px}
+  .btn,.tabs button{min-height:44px}
+  header h1{font-size:28px}
+  .law span{font-size:11px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .tabs > *{flex:0 0 auto}
+  .row{flex-direction:column;align-items:stretch}
+  .row .btn,.row > label{width:100%;text-align:center}
+  .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .diver .f{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .divers{grid-template-columns:minmax(0,1fr)}
+  .q{grid-template-columns:minmax(0,1fr)}
+  .q .yn{gap:18px}
+  .q .yn label{font-size:15px;min-height:36px}
+  .q .yn input{width:22px;height:22px}
+  .inline input,.boxes input{width:22px;height:22px}
+  section.card{padding:12px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;gap:8px;align-items:center;background:var(--slate);border-top:1px solid var(--line);
+    padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .mbar .sum{flex:1;font:600 13px var(--f-mono);display:flex;gap:10px}
+  .mbar .btn{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Pizarra de plan · B3E <small id="ver" style="font:12px var(--f-mono);color:var(--muted)"></small></h1>
+    <p id="net" style="margin:6px 0 0;font:12px var(--f-mono);color:var(--ok)"></p>
+    <p>Plan de inmersión desde barco con las reglas del curso y del Real Decreto 550/2020 ya cargadas. Rellena lo tuyo, mira las comprobaciones y copia el plan al grupo de WhatsApp.</p>
+    <div class="law" aria-label="Reglas precargadas">
+      <span><b>≤ 40 m</b> · aire o nitrox</span>
+      <span><b>Sin deco programada</b></span>
+      <span>Deco de emergencia: <b>ordenador, ≤ 10 min en total</b></span>
+      <span><b>PO₂ ≤ 1,4 bar</b></span>
+      <span>Mínimo: <b>pareja</b></span>
+      <span>Mismo ordenador todo el día</span>
+      <span>Botellas a 6 m: <b>no cuentan</b></span>
+    </div>
+  </header>
+
+  <div class="tabs" role="group" aria-label="Inmersión">
+    <button id="tab1" aria-pressed="true" data-dive="0">1.ª inmersión</button>
+    <button id="tab2" aria-pressed="false" data-dive="1">2.ª inmersión</button>
+    <button id="reset" class="btn ghost" type="button">Volver al ejemplo</button>
+    <button id="savef" class="btn ghost" type="button">Guardar plan en archivo</button>
+    <label class="btn ghost" for="openf" style="display:inline-block;text-transform:uppercase;letter-spacing:.04em;font:600 15px var(--f-display);color:var(--accent)">Abrir plan<input id="openf" type="file" accept=".json,application/json" hidden></label>
+  </div>
+
+  <div class="grid">
+    <div style="display:grid;gap:18px;min-width:0">
+      <section class="card">
+        <h2>Punto y ruta <small id="exflag"></small></h2>
+        <div class="fields">
+          <label>Fecha<input id="fecha" type="date"></label>
+          <label>Punto
+            <select id="punto"></select></label>
+          <label>Profundidad máx. (m)<input id="prof" type="number" min="1" max="60" step="1"></label>
+          <label>Tiempo de fondo (min)<input id="tfondo" type="number" min="1" max="120" step="1"></label>
+          <label>Rumbo de ida (°)<input id="rumboIda" type="number" min="0" max="359" step="1"></label>
+          <label>Rumbo de vuelta (°)<input id="rumboVuelta" type="number" min="0" max="359" step="1" readonly title="Se calcula: ida + 180°"></label>
+          <label>Guía de la ida<input id="guiaIda" type="text"></label>
+          <label>Guía de la vuelta<input id="guiaVuelta" type="text"></label>
+          <label>Da el briefing<input id="briefing" type="text"></label>
+          <label>Intervalo previo (min)<input id="intervalo" type="number" min="0" step="5"></label>
+          <label>Guías subacuáticos en el agua<input id="guias" type="number" min="0" step="1"></label>
+        </div>
+        <label class="inline"><input id="tiempoAuto" type="checkbox"> Ajustar tiempo automáticamente al gas y al sin-deco de todos</label>
+        <p class="hint" id="autoInfo" role="status"></p>
+        <div id="puntoInfo" class="note" style="display:grid;gap:6px"></div>
+        <label>Recorrido previsto<textarea id="ruta" rows="3" style="font:14px var(--f-body);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px;width:100%"></textarea></label>
+        <div class="row" style="align-items:end">
+          <label style="flex:1;min-width:180px">Viento previsto<select id="viento"><option value="">—</option><option>Levante</option><option>Poniente</option><option>Norte</option><option>Sur / lebeche</option><option>Calma</option></select></label>
+          <span class="hint" id="vientoInfo" style="flex:2;min-width:200px"></span>
+        </div>
+        <p class="hint" id="altInfo"></p>
+        <label class="inline"><input type="checkbox" id="sinExp"> Hay buceadores sin experiencia que no vienen organizados (entonces: 1 guía con fuente alternativa de aire por cada 3 parejas)</label>
+        <p class="hint">Tiempo de fondo: desde que empiezas a bajar hasta que empiezas a subir. El rumbo de vuelta se calcula solo (ida + 180°).</p>
+      </section>
+
+      <section class="card">
+        <h2>Buceadores <small>cada uno con su gas, su botella y el tiempo sin deco que le da su ordenador</small></h2>
+        <div class="divers" id="rows"></div>
+        <div class="row">
+          <button class="btn" id="add" type="button">Añadir buceador</button>
+          <button class="btn ghost" id="addpair" type="button">Apuntar pareja</button>
+          <button class="btn ghost" id="pair" type="button">Emparejar sueltos</button>
+          <button class="btn ghost" id="pastebtn" type="button">Pegar fichas de WhatsApp</button>
+          <button class="btn" id="mandarFicha" type="button">Enviar la ficha al grupo por WhatsApp</button>
+          <a class="btn ghost" id="fichaMovil" href="https://dmartsar.github.io/ficha-b3e/" target="_blank" rel="noopener">Ficha online para los buceadores</a>
+          <button class="btn ghost" id="declbtn" type="button">Descargar declaraciones de salud</button>
+          <label class="btn ghost" for="impf" style="display:inline-block;text-transform:uppercase;letter-spacing:.04em;font:600 15px var(--f-display);color:var(--accent)">Importar fichas<input id="impf" type="file" accept=".json,application/json" multiple hidden></label>
+          <label style="flex:1;min-width:180px">Llegar a superficie con (bar)<input id="reserva" type="number" min="0" max="120" step="10"></label>
+          <label style="flex:1;min-width:180px">Regla de gas
+            <select id="regla"><option value="2">Mitades (ida y vuelta)</option><option value="3">Tercios (más prudente)</option></select></label>
+        </div>
+        <div id="pastebox" hidden style="display:grid;gap:8px">
+          <label>Pega aquí los mensajes de WhatsApp con fichas (puedes pegar varios a la vez)<textarea id="pastetxt" rows="5" style="font:13px var(--f-mono);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px;width:100%"></textarea></label>
+          <button class="btn" id="pasteok" type="button">Añadir fichas pegadas</button>
+        </div>
+        <p class="hint" id="pairmsg"></p>
+        <p class="hint">Si dos buceadores vienen juntos, usad «Apuntar pareja» o marcad «Vienen apuntados juntos»: «Emparejar sueltos» no los separa. Cada buceador abre su <b>ficha</b> y rellena nivel, seguro, cuestionario de salud y la aceptación del plan. También puede rellenarla en su propio móvil, pulsar «Exportar mi ficha» y mandarte el archivo para que lo importes. «Sin deco a esa prof.»: míralo en el modo plan de tu ordenador (con tu conservadurismo y, en la 2.ª, tu nitrógeno residual). La hoja no calcula descompresión: solo comprueba que el tiempo de fondo cabe dentro de lo que dice tu ordenador.</p>
+      </section>
+
+      <section class="card">
+        <h2>Equipo mínimo <small>anexo III del RD 550/2020</small></h2>
+        <div class="boxes" id="equipo"></div>
+      </section>
+
+      <section class="card">
+        <h2>Antes de saltar</h2>
+        <div class="boxes" id="previo"></div>
+        <p class="note">Si en el fondo el ordenador entra en deco: avisa a tu pareja y al guía, sube de cota si aún se puede y cumple lo que diga el ordenador (la ley permite como máximo 10 minutos en total en una emergencia). Las botellas colgadas a 6 m son para emergencias: nunca forman parte del plan.</p>
+      </section>
+    </div>
+
+    <div class="sticky" style="display:grid;gap:18px;min-width:0">
+      <section class="card" aria-live="polite">
+        <h2>Comprobaciones</h2>
+        <div class="checks" id="checks"></div>
+      </section>
+      <section class="card">
+        <h2>Plan para WhatsApp · dos inmersiones</h2>
+        <pre id="wa"></pre>
+        <div class="row"><button class="btn" id="copy" type="button">Copiar plan</button><button class="btn ghost" id="mandarFicha2" type="button">Enviar la ficha al grupo</button><span id="copied" class="hint" role="status"></span></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="mbar" role="region" aria-label="Resumen">
+    <span class="sum" id="msum"></span>
+    <button class="btn ghost" type="button" id="mver">Ver</button>
+    <button class="btn" type="button" id="mcopy">Copiar plan</button>
+  </div>
+
+  <footer>
+    <p>Cálculo de gas: consumo en superficie × presión absoluta (profundidad/10 + 1). Bajada a 18 m/min, subida a 9 m/min, parada de seguridad de 3 min a 5 m. Todo el tiempo de fondo se cuenta a la profundidad máxima, que es lo más prudente. Profundidad máxima del gas con PO₂ 1,4 bar: (1,4 / fracción de O₂ − 1) × 10 m. La reserva de llegada y la regla de gas son buena práctica de curso, no ley. Esta hoja no sustituye al ordenador, al instructor ni a la formación.</p>
+    <p>Fuente legal: Real Decreto 550/2020 (art. 7, 8, 11, 12, 13, 14, 18, 20 y anexos I, II y III) y Decreto 10/2003 de la Comunitat Valenciana sobre centros de buceo (anexo I, art. 8 y 13), texto consolidado del BOE con la reforma del Real Decreto 1188/2025 (en vigor desde el 31/12/2025).</p>
+  </footer>
+</div>
+
+<script>window.PIZARRA_VERSION = '1.13.0';</script>
+<script id="calc">
+/* Cálculos puros de la pizarra. Sin DOM: los prueba tests/calc.test.mjs. Si cambias algo aquí, actualiza los tests. */
+window.PizarraCalc = (function(){
+  const num = v => { const x = parseFloat(String(v).replace(',', '.')); return isFinite(x) ? x : NaN; };
+  const PO2_MAX = 1.4;        // RD 550/2020, anexo II: recreativo
+  const PROF_LEGAL = 40;      // RD 550/2020, art. 18.1
+  const EQUIPO = ['Chaleco (compensador de flotabilidad)','Máscara','Aletas','Regulador con dos segundas etapas','Manómetro','Cuchillo o cortador','Profundímetro','Reloj','Ordenador o tablas','Señal acústica de superficie','Boya de señalización'];
+  const pabs = d => d/10 + 1;
+  const mod = o2 => Math.floor((PO2_MAX/(o2/100) - 1) * 10 + 1e-9);
+  // Gas de un buceador. Bajada 18 m/min, subida 9 m/min, parada 3 min a 5 m; todo el fondo a la prof. máx.
+  function gas(d, depth, tb, reserva, regla){
+    const v = num(d.v), p0 = num(d.p0), sac = num(d.sac);
+    if (!(v>0 && p0>0 && sac>0 && depth>0 && tb>0)) return null;
+    const tDesc = depth/18;
+    const lBottom = sac * pabs(depth) * tb;
+    const lAsc = sac * (pabs((depth+5)/2) * Math.max(depth-5,0)/9 + pabs(5)*3 + pabs(2.5)*(5/9));
+    const barAsc = lAsc / v, barBottom = lBottom / v;
+    const usable = p0 - reserva - barAsc;
+    const turn = p0 - usable/regla;
+    const end = p0 - barBottom - barAsc;
+    const tMax = usable > 0 ? usable * v / (sac * pabs(depth)) : 0;
+    return {turn, end, tMax, barAsc, tDesc};
+  }
+
+  // Propuesta calculada con el modelo de gas de esta hoja y NDL aportados por los ordenadores.
+  // El margen de 3 min es un criterio de planificación, no una tabla de descompresión.
+  function tiempoAutomatico(s){
+    const depth = num(s.prof), reserva = num(s.reserva), divers = s.divers || [];
+    if (!(depth > 0 && depth <= PROF_LEGAL) || !(reserva >= 0) || !divers.length)
+      return { tiempo: null, motivo: 'Completa profundidad, reserva y buceadores.' };
+    if (divers.some(d => !(num(d.o2) >= 21 && num(d.o2) <= 40) || num(d.o2)/100*pabs(depth) > PO2_MAX + 1e-9))
+      return { tiempo: null, motivo: 'Revisa el gas: alguna mezcla no es compatible con la profundidad.' };
+    const gases = divers.map(d => gas(d, depth, 1, reserva, +s.regla || 2));
+    if (gases.some(g => !g)) return { tiempo: null, motivo: 'Completa botella, presión inicial y consumo de todos.' };
+    if (divers.some(d => !(num(d.ndl) >= 0)))
+      return { tiempo: null, motivo: 'Introduce el sin-deco de cada ordenador para esta profundidad y gas; en la 2.ª, con la 1.ª inmersión y el intervalo.' };
+    const gasMax = Math.min(...gases.map(g => g.tMax));
+    const ndlMax = Math.min(...divers.map(d => num(d.ndl))) - 3;
+    const tiempo = Math.min(120, Math.floor(Math.min(gasMax, ndlMax)));
+    return tiempo > 0 ? { tiempo, motivo: `Propuesta ${tiempo} min: gas del grupo ${Math.floor(gasMax)} min; sin-deco menos 3 min de margen ${Math.max(0, Math.floor(ndlMax))} min. Confirmar con el guía.` }
+      : { tiempo: null, motivo: 'No queda tiempo disponible con el gas, reserva y margen sin-deco indicados.' };
+  }
+
+  // ---- Cuestionario de salud (anexo I del RD 550/2020 = Cuestionario Médico del Buceador RSTC 2020).
+  // Regla del cuestionario: hace falta evaluación médica si responde Sí a la 3, 5 o 10, o a cualquier punto de un cuadro.
+  const SALUD_DIRECTAS = [3, 5, 10];
+  const SALUD_CUADRO = {1:'A', 2:'B', 4:'C', 6:'D', 7:'E', 8:'F', 9:'G'};
+  // resp: { q1:'si'|'no', ..., q10, A1:'si'|'no', ... }
+  // Devuelve 'incompleto' | 'sin_afecciones' | 'requiere_medico'
+  function saludResultado(resp, cuadros){
+    resp = resp || {};
+    for (let q = 1; q <= 10; q++) if (resp['q'+q] !== 'si' && resp['q'+q] !== 'no') return 'incompleto';
+    let medico = SALUD_DIRECTAS.some(q => resp['q'+q] === 'si');
+    for (const [q, c] of Object.entries(SALUD_CUADRO)) {
+      if (resp['q'+q] !== 'si') continue;
+      const n = (cuadros && cuadros[c] ? cuadros[c].length : 0);
+      for (let k = 1; k <= n; k++) {
+        const v = resp[c+k];
+        if (v !== 'si' && v !== 'no') return 'incompleto';
+        if (v === 'si') medico = true;
+      }
+    }
+    return medico ? 'requiere_medico' : 'sin_afecciones';
+  }
+  // Art. 8 RD 550/2020: con afección, solo si acredita reconocimiento médico anual.
+  // fechaPlan y fechaReco en 'AAAA-MM-DD'. Devuelve 'apto' | 'no_apto' | 'incompleto'
+  function saludApto(resultado, fechaReco, fechaPlan){
+    if (resultado === 'incompleto') return 'incompleto';
+    if (resultado === 'sin_afecciones') return 'apto';
+    if (!fechaReco) return 'no_apto';
+    const r = new Date(fechaReco + 'T12:00'), p = new Date((fechaPlan || new Date().toISOString().slice(0,10)) + 'T12:00');
+    const limite = new Date(r); limite.setFullYear(limite.getFullYear() + 1);
+    return (r <= p && p <= limite) ? 'apto' : 'no_apto';
+  }
+
+  // ---- Niveles para formar parejas (B1E…instructor o equivalente de otra escuela).
+  const NIVELES = { 'B1E': 1, 'B2E': 2, 'B3E': 3, 'Instructor': 4 };
+  const nivelDe = d => NIVELES[d.nivel] || 0;
+
+  // ---- Menores. Ley (RD 550/2020 art. 7) y regla del club (normativa valenciana, más estricta).
+  function limiteMenor(edad){
+    edad = num(edad);
+    if (!isFinite(edad) || edad >= 18) return null;
+    const ley = edad < 8 ? 0 : edad <= 9 ? 6 : edad <= 11 ? 12 : edad <= 15 ? 21 : 40;
+    const club = edad < 8 ? 0 : edad <= 9 ? 0 : edad <= 11 ? 6 : edad <= 15 ? 12 : null; // null = según titulación
+    return { ley, club, soloAire: true, necesitaAdultoB3E: edad <= 16 };
+  }
+
+  // ---- Parejas. Las que se apuntan juntas (fija + misma letra) se respetan tal cual.
+  // Al resto: el de más nivel e inmersiones con el de menos (criterio de curso; la ley solo exige ir en pareja).
+  // Menores de 16 o menos van con un adulto B3E o superior, máximo 2 por adulto (regla del club).
+  // Número impar: el que sobra va de tercero con la pareja formada más fuerte.
+  // Devuelve { fijos: [[i…]], grupos: [[i…]] (nuevos), sinPareja: [i…] }.
+  function formarParejas(divers){
+    const idx = divers.map((d, i) => i);
+    const exp = i => (nivelDe(divers[i]) * 10000) + (num(divers[i].inm) || 0);
+    const esMenor = i => { const l = limiteMenor(divers[i].edad); return !!(l && l.necesitaAdultoB3E); };
+    // 1) parejas apuntadas
+    const porLetra = {};
+    idx.forEach(i => { const d = divers[i], k = (d.p || '').trim(); if (d.fija && k) (porLetra[k] = porLetra[k] || []).push(i); });
+    const fijos = Object.values(porLetra).filter(g => g.length >= 2);
+    const usado = new Set(fijos.flat());
+    // 2) menores sueltos con un adulto B3E+ suelto
+    const libres = idx.filter(i => !usado.has(i));
+    const adultosB3 = libres.filter(i => !esMenor(i) && nivelDe(divers[i]) >= 3).sort((a,b) => exp(b) - exp(a));
+    const menores = libres.filter(esMenor).sort((a,b) => exp(a) - exp(b));
+    const grupos = [], sinPareja = [];
+    let k = 0;
+    for (const m of menores) {
+      let g = null;
+      if (k < adultosB3.length) { g = [adultosB3[k++]]; grupos.push(g); }
+      else g = grupos.find(g => g.filter(esMenor).length < 2) || null;   // segundo menor con un adulto ya asignado
+      if (g) { g.push(m); g.forEach(i => usado.add(i)); } else { sinPareja.push(m); usado.add(m); }
+    }
+    // 3) el resto: más experto con menos experto
+    const resto = idx.filter(i => !usado.has(i)).sort((a,b) => exp(b) - exp(a));
+    while (resto.length >= 2) grupos.push([resto.shift(), resto.pop()]);
+    if (resto.length === 1) {
+      const solo = resto[0];
+      const destino = grupos.filter(g => g.length === 2 && !g.some(esMenor)).sort((a,b) => Math.max(...b.map(exp)) - Math.max(...a.map(exp)))[0];
+      if (destino) destino.push(solo); else sinPareja.push(solo);
+    }
+    return { fijos, grupos, sinPareja };
+  }
+
+  // Huella del plan: si cambia algo de esto, las aceptaciones dejan de valer.
+  function huellaPlan(s){
+    // Solo lo común del plan: si entrara la lista de buceadores, el código cambiaría cada vez que alguien se apunta.
+    const base = JSON.stringify([s.fecha, s.punto, s.prof, s.tfondo, s.rumboIda, s.guiaIda, s.guiaVuelta, s.reserva, s.regla, s.ruta || '']);
+    let h = 5381; for (let i = 0; i < base.length; i++) h = ((h << 5) + h + base.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+  }
+  function huellaJornada(jornada){
+    const base = JSON.stringify((jornada.dives || []).map(s => [s.fecha, s.punto, s.prof, s.tfondo, s.intervalo, s.rumboIda, s.guiaIda, s.guiaVuelta, s.briefing, s.reserva, s.regla, s.ruta || '']));
+    let h = 5381; for (let i = 0; i < base.length; i++) h = ((h << 5) + h + base.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+  }
+  const FORMULARIO_URL = 'https://dmartsar.github.io/ficha-b3e/';
+  function enlaceFicha(jornada){
+    const payload = { codigo:huellaJornada(jornada).toUpperCase(), dives:(jornada.dives || []).map(s => ({ fecha:s.fecha, punto:s.punto, prof:s.prof, tfondo:s.tfondo, intervalo:s.intervalo })) };
+    let bin = ''; new TextEncoder().encode(JSON.stringify(payload)).forEach(b => { bin += String.fromCharCode(b); });
+    return FORMULARIO_URL + '#plan=' + btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+
+  // ---- Guías. Decreto 10/2003 de la Comunitat Valenciana (centros de buceo), anexo I, art. 8.4:
+  // un guía subacuático con fuente alternativa de aire por cada tres parejas, cuando hay buceadores no experimentados que no vienen organizados.
+  const guiasNecesarios = nParejas => Math.ceil(Math.max(0, nParejas) / 3);
+  // RD 550/2020 art. 20.2: exposición diaria de guías e instructores ≤ 180 min (300 si toda la jornada es a menos de 10 m),
+  // contando bajada, fondo y subida. Aproximación: tiempo de fondo + subida a 9 m/min hasta 5 m + 3 min de parada + último tramo.
+  const tiempoInmersion = (prof, tfondo) => { prof = num(prof); tfondo = num(tfondo); if (!(prof > 0 && tfondo > 0)) return 0; return tfondo + Math.max(prof - 5, 0)/9 + 3 + 5/9; };
+  function exposicionGuia(inmersiones){
+    const total = inmersiones.reduce((a, d) => a + tiempoInmersion(d.prof, d.tfondo), 0);
+    const somera = inmersiones.every(d => !(num(d.prof) >= 10));
+    return { total, limite: somera ? 300 : 180 };
+  }
+  // ---- Fichas que llegan del formulario por WhatsApp: «FICHA-B3E:<base64url de JSON>».
+  function leerCodigos(texto){
+    const out = [], re = /FICHA-B3E:([A-Za-z0-9_-]+)/g; let m;
+    while ((m = re.exec(String(texto || '')))) {
+      try {
+        const b64 = m[1].replace(/-/g, '+').replace(/_/g, '/'), bin = atob(b64 + '==='.slice((b64.length + 3) % 4));
+        const j = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))));
+        if (j && j.v === 1 && j.b && j.b.n) out.push(j.b);
+      } catch (e) { /* código roto: se ignora */ }
+    }
+    return out;
+  }
+  // Parejas que se piden mutuamente («vengo con…»). Devuelve pares de índices.
+  function parejasPedidas(divers){
+    const norm = s => String(s || '').replace(/^\s*\[PRUEBA\]\s*/i, '').trim().toLowerCase(), pares = [], usado = new Set();
+    divers.forEach((d, i) => {
+      if (usado.has(i) || !norm(d.con)) return;
+      const j = divers.findIndex((o, k) => k !== i && !usado.has(k) && norm(o.n) === norm(d.con) && (!norm(o.con) || norm(o.con) === norm(d.n)));
+      if (j >= 0) { pares.push([i, j]); usado.add(i); usado.add(j); }
+    });
+    return pares;
+  }
+
+  // ---- Puntos de inmersión de la isla de Benidorm. Solo datos con fuente; null = sin dato verificado (confírmalo con el centro).
+  // abrigo: vientos con los que la fuente dice que el punto queda resguardado.
+  const PUNTOS = [
+    { nombre: 'La Llosa 1', profMin: 8, profMax: 30, boya: 8, abrigo: [], rumbo: 90, coord: '38° 29,973\' N · 0° 07,625\' O', tiempo: 40, dificultad: 'alta', mapa: 'assets/mapas/la-llosa-1-guia.png', mapaAlt: 'Mapa esquemático de la ruta de La Llosa, con barco, flechas y cotas de 10 a 29 metros',
+      ruta: 'Fondeo sobre la parte más somera (8 m), entre bloques de roca redondeados. Rumbo este hasta el cortado y bajar por una hendidura de la pared, casi en vertical, hasta unos 25 m (fondo de arena y cascajo). Giro de 90° al norte hasta unas grandes rocas inclinadas; en una está la placa de la Virgen. Rodearlas y cruzar una pequeña cueva al nivel del fondo (máx. 29 m). Empezar a subir con rumbo suroeste hasta la pared del cortado y seguir una pequeña explanada con pendiente suave hasta la parte alta. Volver con rumbo sur entre bloques de roca hasta el fondeo; ascenso controlado con parada de seguridad.',
+      notas: 'Bajo a unos 400 m al sur de la isla; la cima no aflora. Corrientes fuertes ocasionales. Hay cuevas o túneles; se puede hacer de noche. La guía de la Diputación describe «La Llosa» sin decir si es la 1 o la 2: el recorrido coincide con la boya norte (plataforma de 8 m y Virgen). El club pide B1E como mínimo.',
+      fuente: 'Diputación de Alicante, «Senderos bajo el mar. Guía submarina de la provincia de Alicante», ficha «La Llosa»; guía pública de buceo de la Comunitat Valenciana, «Recorrido La Llosa», p. 101; Comunitat Valenciana, ficha «La Llosa (Benidorm)»; Revolution Dive; Ali-Sub; GISED (evento La Llosa)' },
+    { nombre: 'La Llosa 2', profMin: 8, profMax: 29, boya: 8, abrigo: [], mapa: 'assets/mapas/la-llosa-2.jpg', mapaAlt: 'Mapa esquemático del recorrido de La Llosa 2, con puntos A, B y C y cotas de profundidad', ruta: 'La ficha visual de VisitBenidorm muestra el inicio junto al barco y la cota de 8 m; seguir el recorrido marcado por A, B y C, descendiendo progresivamente por las cotas dibujadas de unos 9, 20, 25 y 29 m, y regresar al punto de inicio con ascenso controlado.', notas: 'La fuente identifica el recorrido como «La Llosa 2», pero no el número físico de la boya ni coordenadas. La cota de 8 m es la del inicio/amarre representado, no una confirmación del identificador de la boya. Otra fuente valenciana llama «Second Llosa» a un punto distinto y mucho más profundo (32–43 m); no se mezclan ambos datos. Confirma con el centro la boya exacta y el recorrido antes de guiar.', fuente: 'VisitBenidorm, «La Llosa 2» y PDF enlazado «Buceo en la Llosa» (archivo567.pdf)' },
+    { nombre: 'La Llosa 2 · técnica', profMin: 32, profMax: 40, boya: null, abrigo: [], rumbo: 100, tipo: 'técnica', ruta: 'Desde la boya de La Llosa, rumbo aproximado 100° durante unos minutos a mínima profundidad hasta la Segunda Llosa. El fondo es un escalón vertical que cae aproximadamente de 32 a 43 m; para esta pizarra se fija una profundidad operativa de 40 m.', notas: 'Entrada separada del recorrido somero de La Llosa 2 (8–29 m). El límite de 40 m es el máximo de la modalidad recreativa autónoma y no convierte esta herramienta en un planificador técnico: no calcula descompresión ni autoriza una inmersión con descompresión programada. Usa esta entrada solo con formación, equipo, procedimientos, ordenador y plan técnico adecuados; confirma con el centro la boya y el acceso.', fuente: 'Generalitat Valenciana, «La Segunda Llosa - Benidorm», https://www.ecoturismo.comunitatvalenciana.com/index.php/buceo-en-la-comunitat-valenciana/recursos/la-segunda-llosa-benidorm; Real Decreto 550/2020, art. 18.1' },
+    { nombre: 'Isla · Cara norte', profMin: 9, profMax: 24, boya: null, abrigo: [], coord: '38° 30,295\' N · 0° 07,724\' O', tiempo: 45, dificultad: 'media',
+      ruta: 'Barco frente a unas rocas redondeadas, antes del extremo norte de la isla (sin boya). Bajar hasta un gran arco a unos 6 m, partido por una laja: se pasa por arriba (más amplio) o por abajo. Seguir paralelos a la pared, de rocas en terrazas, sobre fondo rocoso y plano con algo de arena y cascajo; abajo, un extraplomo alargado (unos 10 m). Con la mitad del gas, giro de 180°: separarse de la pared sobre rocas de varios tamaños, ganando profundidad (14–15 m), hasta unas lajas en escalones. Subir de nuevo al arco y a superficie.',
+      notas: 'Solo desde barco. Hay arco y cuevas; se puede hacer de noche. La guía da 9 m de profundidad mínima, pero el arco del recorrido está a unos 6 m.',
+      fuente: 'Diputación de Alicante, «Senderos bajo el mar. Guía submarina de la provincia de Alicante», ficha «Isla de Benidorm, cara norte»; Revolution Dive' },
+    { nombre: 'Isla · Los Arcos', profMin: 6, profMax: 22, boya: 6, abrigo: [],
+      ruta: 'Cara noreste de la isla. Boya a unos 6 m. Fondo de rocas grandes y zonas de arena, con cuevas hacia los 9 m.', notas: '', fuente: 'Revolution Dive' },
+    { nombre: 'Isla · Embarcadero', profMin: 1, profMax: 20, boya: null, abrigo: ['Levante'], coord: '38° 30,256\' N · 0° 07,842\' O', tiempo: 40, dificultad: 'baja', mapa: 'assets/mapas/embarcadero-snorkel-guia.png', mapaAlt: 'Mapa esquemático del recorrido de snorkel del Embarcadero-Isla, con cotas de 1 a 9 metros',
+      ruta: 'Varias boyas en la cara sur, frente al embarcadero. Ir nadando en superficie hacia el embarcadero para ahorrar aire y bajar cuando aparezcan las rocas (12–15 m). Seguir el contorno de la isla en sentido contrario a las agujas del reloj por el talud de grandes rocas (6–16 m; arena desde 16 m), manteniéndose a 10–15 m al pie del talud; a 50–80 m de la salida, rocas extraplomadas (10–12 m). Cuando las rocas escasean aparece una pared: subir por ella hasta 5 m (estratos inclinados) y empezar la vuelta, entre superficie y 6 m, hasta una zona muy somera con un arco aplanado a menos de 1 m.',
+      notas: 'Fácil, para principiantes; también snorkel y nocturna. Da refugio los días de levante. La guía de la Diputación escribe la longitud como «E»: es una errata, la isla está al oeste de Greenwich. El mapa adjunto es el recorrido de snorkel de la guía (1–9 m), no sustituye el recorrido con botella descrito arriba.',
+      fuente: 'Diputación de Alicante, «Senderos bajo el mar. Guía submarina de la provincia de Alicante», ficha «El Embarcadero»; guía pública de buceo de la Comunitat Valenciana, «Recorrido Embarcadero-Isla snorkel», p. 109; Ali-Sub; Revolution Dive' },
+    { nombre: 'Isla · Punta Garbí', profMin: 1, profMax: 20, boya: 8, abrigo: [],
+      ruta: 'Boya a unos 8 m. Seguir la pared de unos 4 a 20 m; al pie, arena que baja hasta 28 m (rayas). Arco con mucho color. También se hace de noche.', notas: 'Para todos los niveles.', fuente: 'Revolution Dive' },
+    { nombre: 'Isla · La Caribeña', profMin: null, profMax: null, boya: null, abrigo: [], ruta: '', notas: 'Sin datos verificados. Pide al centro la profundidad y el recorrido.', fuente: '' },
+    { nombre: 'Otro', profMin: null, profMax: null, boya: null, abrigo: [], ruta: '', notas: '', fuente: '' }
+  ];
+  const puntoDe = nombre => PUNTOS.find(p => p.nombre === nombre) || (nombre === 'Isla · cara norte (Los Arcos)' ? PUNTOS.find(p => p.nombre === 'Isla · Cara norte') : null);
+
+  return { PUNTOS, puntoDe, EQUIPO, num, pabs, mod, gas, tiempoAutomatico, PO2_MAX, PROF_LEGAL, SALUD_CUADRO, saludResultado, saludApto, NIVELES, nivelDe, limiteMenor, formarParejas, huellaPlan, huellaJornada, enlaceFicha,
+           guiasNecesarios, tiempoInmersion, exposicionGuia, leerCodigos, parejasPedidas };
+})();
+</script>
+<script>
+(function(){
+  const KEY = 'pizarra-b3e-v1';
+  const { EQUIPO } = window.PizarraCalc;
+  const SALUD_PREG = [
+    'He tenido problemas con los pulmones, la respiración, el corazón y/o la sangre que afectan a mi rendimiento físico o mental normal.',
+    'Tengo más de 45 años.',
+    'Me cuesta realizar ejercicio moderado (por ejemplo, caminar 1,6 km en 12 minutos o nadar 200 metros sin descansar), o no he podido participar en una actividad física normal por razones de estado físico o de salud en los últimos 12 meses.',
+    'He tenido problemas con mis ojos, oídos, o fosas nasales / senos paranasales.',
+    'He tenido una cirugía en los últimos 12 meses, o tengo problemas continuos relacionados con una cirugía anterior.',
+    'He perdido el conocimiento, he tenido dolores de cabeza por migraña, convulsiones, accidente cerebrovascular, lesión significativa en la cabeza, o he sufrido de lesión o enfermedad neurológica persistente.',
+    'He tenido problemas psicológicos (o he recibido tratamiento psicológico en los últimos 5 años), trastorno de la personalidad, ataques de pánico o una adicción a las drogas o el alcohol, o me han diagnosticado un problema de aprendizaje o de desarrollo.',
+    'He tenido problemas de espalda, hernia, úlceras o diabetes.',
+    'He tenido problemas estomacales o intestinales, incluyendo diarrea reciente.',
+    'Estoy tomando medicamentos recetados (con la excepción de los anticonceptivos o los antipalúdicos que no sean mefloquina).'
+  ];
+  const SALUD_CUADROS = {
+    A: ['Cirugía torácica, cardíaca o de válvulas cardíacas, un dispositivo médico implantado (stent, marcapasos, neuroestimulador), neumotórax y/o enfermedad pulmonar crónica.',
+        'Asma, sibilancias, alergias graves, fiebre del heno o vías respiratorias congestionadas en los últimos 12 meses que limiten mi actividad física.',
+        'Un problema o enfermedad del corazón (angina, dolor en el pecho al esfuerzo, insuficiencia cardíaca, edema pulmonar, miocardiopatía o accidente cerebrovascular), o tomo medicamentos para una afección cardíaca.',
+        'Bronquitis recurrente y tos persistente en los últimos 12 meses, o diagnóstico de enfisema.',
+        'Síntomas en pulmones, respiración, corazón y/o sangre en los últimos 30 días que perjudiquen mi rendimiento físico o mental.'],
+    B: ['Fumo o inhalo nicotina por otros medios.', 'Tengo el colesterol alto.', 'Tengo la presión arterial alta.',
+        'Un familiar de 1.er o 2.º grado murió de muerte súbita, enfermedad cardíaca o accidente cerebrovascular antes de los 50 años, o tengo antecedentes familiares de enfermedad cardíaca antes de los 50 años.'],
+    C: ['Cirugía sinusal en los últimos 6 meses.', 'Enfermedades o cirugía del oído, pérdida de audición o alteraciones del equilibrio.', 'Sinusitis recurrente en los últimos 12 meses.', 'Cirugía ocular en los últimos 3 meses.'],
+    D: ['Lesión en la cabeza con pérdida de conciencia en los últimos 5 años.', 'Lesiones o enfermedades neurológicas persistentes.', 'Migrañas recurrentes en los últimos 12 meses, o tomo medicamentos para prevenirlas.', 'Desvanecimientos o desmayos en los últimos 5 años.', 'Epilepsia, ataques o convulsiones, o tomo medicamentos para prevenirlos.'],
+    E: ['Problemas mentales o psicológicos que requieran tratamiento médico o psiquiátrico.', 'Depresión mayor, tendencia suicida, ataques de pánico o trastorno bipolar descontrolado que requiere medicación o tratamiento psiquiátrico.', 'Una condición de salud mental o un trastorno de aprendizaje o desarrollo que requiere atención continua o adaptaciones especiales.', 'Una adicción a las drogas o al alcohol que ha requerido tratamiento en los últimos 5 años.'],
+    F: ['Problemas recurrentes de espalda en los últimos 6 meses que limitan mi actividad diaria.', 'Cirugía de espalda o columna en los últimos 12 meses.', 'Diabetes (controlada con medicación o dieta) o diabetes gestacional en los últimos 12 meses.', 'Una hernia no corregida que limita mis capacidades físicas.', 'Úlceras activas o no tratadas, heridas problemáticas o cirugía de úlceras en los últimos 6 meses.'],
+    G: ['Cirugía de ostomía sin autorización médica para nadar o hacer actividad física.', 'Deshidratación que requirió intervención médica en los últimos 7 días.', 'Úlceras de estómago o intestino activas o no tratadas, o cirugía de úlceras en los últimos 6 meses.', 'Ardor de estómago frecuente, regurgitación o reflujo gastroesofágico.', 'Colitis ulcerosa o enfermedad de Crohn activa o no controlada.', 'Cirugía bariátrica en los últimos 12 meses.']
+  };
+  const { PUNTOS, puntoDe } = window.PizarraCalc;
+  { const sel = document.getElementById('punto'); sel.innerHTML = PUNTOS.map(p => `<option>${p.nombre}</option>`).join(''); }
+  const { saludResultado, saludApto, NIVELES, nivelDe, limiteMenor, formarParejas, huellaPlan, huellaJornada, enlaceFicha, tiempoAutomatico, SALUD_CUADRO, guiasNecesarios, exposicionGuia, leerCodigos, parejasPedidas } = window.PizarraCalc;
+  const abiertas = new Set();
+  const PREVIO = ['Mismo ordenador en las dos inmersiones','El mar permite que la barca nos recoja','Protección térmica adecuada','Seguro de accidentes y RC','Gas analizado y etiquetado (nitrox)','Parejas formadas y señales repasadas','Plan de pérdida de pareja acordado','Cada guía lleva fuente alternativa de aire'];
+  const ejemplo = () => ({
+    ejemplo: true, fecha: '', punto: 'La Llosa 1', prof: 30, tfondo: 15, rumboIda: 90, guiaIda: 'Pareja A', guiaVuelta: 'Pareja B', briefing: 'Pareja A', intervalo: 0,
+    reserva: 50, regla: '2',
+    divers: [
+      {n:'Buceador 1', p:'A', o2:21, v:15, p0:200, sac:20, ndl:20, nivel:'B3E', inm:250},
+      {n:'Buceador 2', p:'A', o2:28, v:15, p0:200, sac:18, ndl:28, nivel:'B1E', inm:25},
+      {n:'Buceador 3', p:'B', o2:21, v:12, p0:200, sac:16, ndl:20, nivel:'B2E', inm:90},
+      {n:'Buceador 4', p:'B', o2:32, v:15, p0:200, sac:22, ndl:30, nivel:'B2E', inm:60}
+    ],
+    equipo: {}, previo: {}
+  });
+  const ejemplo2 = () => Object.assign(ejemplo(), {punto:'Isla · Embarcadero', prof:18, tfondo:40, intervalo:60, rumboIda:200,
+    divers: ejemplo().divers.map(d => Object.assign({}, d, {ndl: d.o2 >= 28 ? 55 : 40}))});
+  let state;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch(e) { state = null; }
+  if (!state || !Array.isArray(state.dives)) state = { cur: 0, dives: [ejemplo(), ejemplo2()] };
+  while (state.dives.length < 2) state.dives.push(state.dives.length === 0 ? ejemplo() : ejemplo2());
+  state.dives = state.dives.map((d, i) => {
+    const base = i === 0 ? ejemplo() : ejemplo2();
+    const out = Object.assign({}, base, d && typeof d === 'object' ? d : {});
+    out.divers = (Array.isArray(out.divers) ? out.divers : base.divers).filter(b => b && typeof b === 'object');
+    if (out.tiempoAuto == null) out.tiempoAuto = true;
+    out.equipo = out.equipo && typeof out.equipo === 'object' ? out.equipo : {};
+    out.previo = out.previo && typeof out.previo === 'object' ? out.previo : {};
+    out.alternativas = out.alternativas && typeof out.alternativas === 'object' ? out.alternativas : {};
+    delete out.planner; // simulador retirado en 1.11.0: se ignora el perfil guardado
+    return out;
+  });
+  state.cur = state.cur === 1 ? 1 : 0;
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+  const $ = id => document.getElementById(id);
+  const D = () => state.dives[state.cur];
+  const num = v => { const x = parseFloat(String(v).replace(',', '.')); return isFinite(x) ? x : NaN; };
+  const fmt = (x, d=0) => isFinite(x) ? x.toLocaleString('es-ES', {maximumFractionDigits:d, minimumFractionDigits:d}) : '—';
+  const { pabs, mod, gas } = window.PizarraCalc;
+
+  function get(o, path){ return path.split('.').reduce((a, k) => (a == null ? undefined : a[k]), o); }
+  function set(o, path, v){ const ks = path.split('.'); let a = o; ks.slice(0,-1).forEach(k => { if (typeof a[k] !== 'object' || a[k] === null) a[k] = {}; a = a[k]; }); a[ks[ks.length-1]] = v; }
+  const hoy = () => new Date().toISOString().slice(0,10);
+  function estadoFicha(d, s){
+    const sal = d.salud || {};
+    const resultado = sal.resultado && !sal.q1 ? sal.resultado : saludResultado(sal, SALUD_CUADROS);   // planes guardados solo traen el resultado
+    let salud = saludApto(resultado, sal.reco, s.fecha || hoy());
+    if (salud === 'apto' && sal.q1 && !sal.firmada) salud = 'sin_firmar';
+    const sg = d.seguro || {};
+    const seguro = !(sg.compania && sg.poliza && sg.hasta && sg.cubre) ? 'falta' : (sg.hasta < (s.fecha || hoy()) ? 'caducado' : 'ok');
+    const acepta = !d.acepta ? 'falta' : (d.acepta.h === huellaJornada(state) ? 'ok' : 'cambio');
+    return { resultado, salud, seguro, acepta, nivel: d.nivel || '', menor: limiteMenor(d.edad) };
+  }
+  function chipsHTML(d, s){
+    const e = estadoFicha(d, s), t = (cls, txt) => `<span class="tag ${cls}">${txt}</span>`;
+    return [
+      e.salud === 'apto' ? t('ok', 'salud') : e.salud === 'no_apto' ? t('bad', 'salud: médico') : e.salud === 'sin_firmar' ? t('warn', 'salud sin firmar') : t('todo', 'salud'),
+      e.seguro === 'ok' ? t('ok', 'seguro') : e.seguro === 'caducado' ? t('bad', 'seguro caducado') : t('todo', 'seguro'),
+      e.acepta === 'ok' ? t('ok', 'plan leído') : e.acepta === 'cambio' ? t('warn', 'plan cambió') : t('todo', 'plan'),
+      e.menor ? t('warn', 'menor') : '',
+      d.equipo ? t(EQUIPO.every(k => d.equipo[k] === true) ? 'ok' : 'todo', `equipo ${EQUIPO.filter(k => d.equipo[k] === true).length}/${EQUIPO.length}`) : t('todo','equipo sin confirmar'),
+      d.fija ? t('ok', 'pareja apuntada') : ''
+    ].join('');
+  }
+  function yn(i, key, val){
+    return `<span class="yn"><label><input type="radio" name="r${i}_${key}" data-i="${i}" data-f="salud.${key}" value="si" ${val==='si'?'checked':''}> Sí</label><label><input type="radio" name="r${i}_${key}" data-i="${i}" data-f="salud.${key}" value="no" ${val==='no'?'checked':''}> No</label></span>`;
+  }
+  function fichaHTML(d, i, s){
+    const sal = d.salud || {}, sg = d.seguro || {}, e = estadoFicha(d, s);
+    const equipoDeclarado = EQUIPO.map(k => `<label class="inline"><input type="checkbox" data-i="${i}" data-f="equipo.${esc(k)}" ${d.equipo?.[k] === true ? 'checked' : ''}> ${esc(k)}</label>`).join('');
+    let q = '';
+    SALUD_PREG.forEach((txt, k) => {
+      const n = k + 1, c = SALUD_CUADRO[n];
+      q += `<div class="q"><span>${n}. ${esc(txt)}</span>${yn(i, 'q'+n, sal['q'+n])}</div>`;
+      if (c && sal['q'+n] === 'si') q += `<div class="cuadro"><h4>Cuadro ${c}${n===2 ? ': tengo más de 45 años y…' : ': tengo o he tenido…'}</h4>` + SALUD_CUADROS[c].map((t, m) => `<div class="q"><span>${esc(t)}</span>${yn(i, c+(m+1), sal[c+(m+1)])}</div>`).join('') + '</div>';
+    });
+    const res = { incompleto: 'Cuestionario sin terminar.', sin_afecciones: 'Sin afecciones declaradas: puede bucear.', requiere_medico: 'Hay alguna respuesta que obliga a acreditar un reconocimiento médico anual (art. 8 del RD 550/2020).' }[e.resultado];
+    return `<div class="ficha">
+      <div class="fields">
+        <label>Edad (solo si es menor)<input type="number" min="8" max="17" step="1" data-i="${i}" data-f="edad" value="${esc(d.edad ?? '')}"></label>
+      </div>
+      <h4>Equipo mínimo declarado por el buceador</h4>
+      ${equipoDeclarado}
+      <h4>Seguro de accidentes y responsabilidad civil (art. 18.4)</h4>
+      <div class="fields">
+        <label>Compañía o federación<input type="text" data-i="${i}" data-f="seguro.compania" value="${esc(sg.compania)}"></label>
+        <label>N.º de póliza o licencia<input type="text" data-i="${i}" data-f="seguro.poliza" value="${esc(sg.poliza)}"></label>
+        <label>Válido hasta<input type="date" data-i="${i}" data-f="seguro.hasta" value="${esc(sg.hasta)}"></label>
+      </div>
+      <label class="inline"><input type="checkbox" data-i="${i}" data-f="seguro.cubre" ${sg.cubre ? 'checked' : ''}> Cubre accidentes y responsabilidad civil</label>
+      <h4>Declaración de salud (anexo I del RD 550/2020)</h4>
+      <p class="hint">Responde con sinceridad. Mujeres: si estás embarazada o intentas quedarte embarazada, no bucees. Las respuestas las guarda quien organiza: el centro tiene que pedir esta declaración (art. 8) y la tendrá que enseñar si pasa algo. No salen en el texto de WhatsApp del plan.</p>
+      ${q}
+      <p class="hint"><b>${res}</b></p>
+      ${e.resultado === 'requiere_medico' ? `<label>Fecha del reconocimiento médico (vale un año)<input type="date" data-i="${i}" data-f="salud.reco" value="${esc(sal.reco)}"></label>` : ''}
+      <label class="inline"><input type="checkbox" data-i="${i}" data-f="salud.firmada" ${sal.firmada ? 'checked' : ''}> Declaro que mis respuestas son ciertas${sal.firmada && sal.firmaFecha ? ` (firmado el ${new Date(sal.firmaFecha).toLocaleString('es-ES')})` : ''}</label>
+      <label class="inline"><input type="checkbox" data-i="${i}" data-acc="1" ${e.acepta === 'ok' ? 'checked' : ''}> He leído el plan de las dos inmersiones y lo acepto${e.acepta === 'cambio' ? ' (el plan ha cambiado desde que lo aceptaste: vuelve a leerlo)' : ''}.</label>
+      <button class="btn ghost" type="button" data-exp="${i}">Exportar mi ficha</button>
+    </div>`;
+  }
+  function cardEl(d, i, s){
+    const tr = document.createElement('div'); tr.className = 'diver'; tr.id = 'card' + i;
+    const nv = Object.keys(NIVELES).map(k => `<option ${d.nivel === k ? 'selected' : ''}>${k}</option>`).join('');
+    tr.innerHTML = `
+      <div class="top">
+        <label>Nombre<input id="n${i}" data-i="${i}" data-k="n" value="${esc(d.n)}"></label>
+        <label>Pareja<input id="p${i}" data-i="${i}" data-k="p" value="${esc(d.p)}"></label>
+        <button class="rm" data-rm="${i}" aria-label="Quitar ${esc(d.n)}" type="button">×</button>
+      </div>
+      <label class="inline"><input type="checkbox" id="fj${i}" data-i="${i}" data-f="fija" ${d.fija ? 'checked' : ''}> Vienen apuntados juntos (no tocar esta pareja al emparejar)</label>
+      <div class="f">
+        <label>Nivel<select id="lv${i}" data-i="${i}" data-k="nivel"><option value="">—</option>${nv}</select></label>
+        <label>N.º inmersiones<input id="ni${i}" data-i="${i}" data-k="inm" type="number" min="0" step="1" value="${d.inm ?? ''}"></label>
+        <label>O₂ %<input id="o${i}" data-i="${i}" data-k="o2" type="number" min="21" max="40" step="1" value="${d.o2}"></label>
+        <label>Botella (L)<input id="v${i}" data-i="${i}" data-k="v" type="number" min="5" max="24" step="1" value="${d.v}"></label>
+        <label>Inicial (bar)<input id="b${i}" data-i="${i}" data-k="p0" type="number" min="50" max="300" step="10" value="${d.p0}"></label>
+        <label>Consumo (L/min)<input id="s${i}" data-i="${i}" data-k="sac" type="number" min="8" max="40" step="1" value="${d.sac}"></label>
+        <label>Sin deco (min)<input id="d${i}" data-i="${i}" data-k="ndl" type="number" min="0" max="200" step="1" value="${d.ndl}"></label>
+      </div>
+      <div class="outs"><span>Gas hasta <b id="mod${i}"></b></span><span>PO₂ <b id="po2${i}"></b></span><span>Media vuelta <b id="turn${i}"></b></span><span>Llega con <b id="end${i}"></b></span></div>
+      <details id="det${i}" ${abiertas.has(i) ? 'open' : ''}><summary>Ficha <span class="chips" id="chips${i}">${chipsHTML(d, s)}</span></summary>${fichaHTML(d, i, s)}</details>`;
+    tr.querySelector('details').addEventListener('toggle', ev => { ev.target.open ? abiertas.add(i) : abiertas.delete(i); });
+    return tr;
+  }
+  function rebuildCard(i){ const s = D(), old = $('card'+i); if (old) old.replaceWith(cardEl(s.divers[i], i, s)); }
+
+  function render(){
+    state.dives.forEach(dive => {
+      const point = puntoDe(dive.punto) || {};
+      if (!dive.ruta && point.ruta) dive.ruta = point.ruta;
+      if (!isFinite(num(dive.prof)) && point.profMax != null) dive.prof = Math.min(point.profMax, 40);
+      if (!isFinite(num(dive.rumboIda)) && point.rumbo != null) dive.rumboIda = point.rumbo;
+      if (dive.tiempoAuto) dive.tfondo = tiempoAutomatico(dive).tiempo;
+    });
+    const s = D();
+    document.querySelectorAll('.tabs [data-dive]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.dive === state.cur)));
+    ['fecha','punto','prof','tfondo','rumboIda','guiaIda','guiaVuelta','briefing','intervalo','reserva','regla','guias','ruta','viento'].forEach(k => { const el = $(k); if (document.activeElement !== el) el.value = s[k] ?? ''; });
+    const ri = num(s.rumboIda); $('rumboVuelta').value = isFinite(ri) ? ((ri + 180) % 360) : '';
+    $('tiempoAuto').checked = !!s.tiempoAuto;
+    $('autoInfo').textContent = s.tiempoAuto ? tiempoAutomatico(s).motivo : 'Tiempo manual. Los consumos y las comprobaciones se actualizan con la profundidad.';
+    $('sinExp').checked = s.sinExp !== false;
+    if (s.punto === 'Isla · cara norte (Los Arcos)') { s.punto = 'Isla · Cara norte'; $('punto').value = s.punto; }
+    const pt = puntoDe(s.punto) || {};
+    const rango = pt.profMax != null ? `${pt.profMin ?? '?'}–${pt.profMax} m` : 'sin dato verificado';
+    $('puntoInfo').innerHTML = `<p><b>${esc(s.punto)}</b> · profundidad ${rango}${pt.tipo ? ` · modalidad ${esc(pt.tipo)}` : ''}${pt.boya != null ? ` · boya a unos ${pt.boya} m` : ''}${pt.abrigo && pt.abrigo.length ? ` · abrigado con ${pt.abrigo.join(', ').toLowerCase()}` : ''}</p>` +
+      (pt.coord || pt.tiempo || pt.dificultad ? `<p class="hint">${[pt.coord ? 'Coordenadas (WGS84): ' + esc(pt.coord) : '', pt.tiempo ? `recorrido de unos ${pt.tiempo} min` : '', pt.dificultad ? `dificultad ${esc(pt.dificultad)}` : ''].filter(Boolean).join(' · ')}</p>` : '') +
+      (pt.mapa ? `<figure class="point-map"><img src="${esc(pt.mapa)}" alt="${esc(pt.mapaAlt || ('Mapa del recorrido de ' + s.punto))}" loading="lazy" onerror="this.closest('figure').hidden=true"><figcaption>Mapa esquemático de la fuente. No sustituye al briefing, al fondeo ni a la decisión del guía.</figcaption></figure>` : '') +
+      (pt.ruta ? `<p>${esc(pt.ruta)}</p>` : '') + (pt.notas ? `<p class="hint">${esc(pt.notas)}</p>` : '') +
+      (pt.fuente ? `<p class="hint">Fuente: ${esc(pt.fuente)}. Datos orientativos: el recorrido real lo marca el guía según el mar.</p>` : '') +
+      (pt.ruta || pt.profMax != null ? `<button class="btn ghost" type="button" id="usarPunto" style="justify-self:start">Usar estos datos en el plan</button>` : '');
+    const v = s.viento || '';
+    $('vientoInfo').textContent = !v ? '' : v === 'Calma' ? 'Con calma se puede ir a cualquier punto.' :
+      (() => { const ab = PUNTOS.filter(p => (p.abrigo || []).includes(v)).map(p => p.nombre); return ab.length ? `Con ${v.toLowerCase()}, las fuentes dan como abrigado: ${ab.join(', ')}. Del resto no hay dato de abrigo: decide el patrón.` : `Para ${v.toLowerCase()} no tengo datos de qué puntos quedan abrigados: decide el patrón o el guía.`; })();
+    const alts = Object.keys(s.alternativas || {}).filter(k => k !== s.punto);
+    $('altInfo').textContent = alts.length ? `Plan B ya preparado para esta inmersión: ${alts.join(', ')}. Cambia el punto arriba y se carga su plan.` : 'Consejo: prepara aquí también el plan B. Al cambiar de punto se guarda el plan de cada uno por separado.';
+    $('exflag').innerHTML = s.ejemplo ? '<span class="ex">DATOS DE EJEMPLO</span>' : '';
+    // rows
+    const tb = $('rows');
+    if (!tb.contains(document.activeElement)) {
+      tb.innerHTML = '';
+      s.divers.forEach((d, i) => tb.appendChild(cardEl(d, i, s)));
+    }
+    // outputs
+    const depth = num(s.prof), tbm = num(s.tfondo), reserva = num(s.reserva), regla = +s.regla || 2;
+    const checks = [];
+    let minMod = Infinity, maxPo2 = 0, worstNdl = Infinity, lowEnd = Infinity, minTurnName = '', badGas = [], badPo2 = [], badNdl = [], lowNdl = [], badEnd = [];
+    s.divers.forEach((d, i) => {
+      const o2 = num(d.o2), m = isFinite(o2) && o2 > 0 ? mod(o2) : NaN, po2 = isFinite(o2) && depth > 0 ? (o2/100)*pabs(depth) : NaN;
+      const g = gas(d, depth, tbm, isFinite(reserva) ? reserva : 50, regla);
+      $('mod'+i).textContent = isFinite(m) ? Math.min(m, 40) + ' m' + (m < 40 ? '' : ' (ley)') : '—';
+      $('po2'+i).textContent = isFinite(po2) ? fmt(po2, 2) : '—';
+      $('po2'+i).style.color = po2 > 1.4 ? 'var(--bad)' : '';
+      $('turn'+i).textContent = g ? fmt(Math.ceil(g.turn/10)*10) + ' bar' : '—';
+      $('end'+i).textContent = g ? fmt(g.end) + ' bar' : '—';
+      $('end'+i).style.color = g && g.end < reserva ? 'var(--bad)' : '';
+      const ch = $('chips'+i); if (ch) ch.innerHTML = chipsHTML(d, s);
+      if (isFinite(m)) minMod = Math.min(minMod, m);
+      if (!(o2 >= 21 && o2 <= 40)) badGas.push(d.n);
+      if (po2 > 1.4) badPo2.push(`${d.n} (${fmt(po2,2)})`);
+      const ndl = num(d.ndl);
+      if (isFinite(ndl)) { worstNdl = Math.min(worstNdl, ndl); if (tbm > ndl) badNdl.push(`${d.n}: ${ndl} min`); else if (ndl - tbm < 3) lowNdl.push(`${d.n}: margen ${ndl - tbm} min`); }
+      if (g) { if (g.end < lowEnd) { lowEnd = g.end; } if (g.end < reserva) badEnd.push(`${d.n}: ${fmt(g.end)} bar`); }
+    });
+    const add = (st, label, txt) => checks.push({st, label, txt});
+    add(depth > 40 ? 'bad' : depth > 0 ? 'ok' : 'todo', 'Profundidad', depth > 40 ? `${depth} m supera el límite legal de 40 m.` : depth > 0 ? `${depth} m, dentro del límite de 40 m.` : 'Falta la profundidad máxima.');
+    add(badGas.length ? 'bad' : 'ok', 'Gas', badGas.length ? `Solo aire o nitrox (21–40 % O₂): revisa ${badGas.join(', ')}.` : 'Todos con aire o nitrox.');
+    add(badPo2.length ? 'bad' : 'ok', 'PO₂', badPo2.length ? `Superan 1,4 bar a ${depth} m: ${badPo2.join(', ')}. Cambia de gas o de profundidad.` : `Nadie supera 1,4 bar. El gas más limitante llega a ${isFinite(minMod) ? Math.min(minMod,40) : '—'} m.`);
+    const parejas = {}; s.divers.forEach(d => { const k = (d.p||'').trim(); if (k) parejas[k] = (parejas[k]||0) + 1; });
+    const solos = Object.entries(parejas).filter(([k,v]) => v < 2).map(([k]) => k);
+    add(s.divers.length < 2 ? 'bad' : solos.length ? 'warn' : 'ok', 'Parejas', s.divers.length < 2 ? 'La unidad mínima es la pareja.' : solos.length ? `Pareja incompleta: ${solos.join(', ')}.` : `${Object.keys(parejas).length} parejas formadas.`);
+    // fichas
+    const est = s.divers.map(d => estadoFicha(d, s));
+    const noApto = s.divers.filter((d, i) => est[i].salud === 'no_apto').map(d => d.n);
+    const pendSalud = s.divers.map((d, i) => [d, est[i]]).filter(([d, e]) => e.salud === 'incompleto' || e.salud === 'sin_firmar').map(([d, e]) => d.n + (e.salud === 'sin_firmar' ? ' (sin firmar)' : ''));
+    const segMal = s.divers.filter((d, i) => est[i].seguro !== 'ok').map((d, i2) => d.n);
+    const sinAcept = s.divers.filter((d, i) => est[i].acepta !== 'ok').map(d => d.n);
+    add(noApto.length ? 'bad' : pendSalud.length ? 'todo' : 'ok', 'Salud', noApto.length ? `Sin reconocimiento médico en vigor, no pueden bucear: ${noApto.join(', ')}.` : pendSalud.length ? `Falta el cuestionario de: ${pendSalud.join(', ')}.` : 'Todos con la declaración de salud hecha y aptos.');
+    add(segMal.length ? (s.divers.some((d,i) => est[i].seguro === 'caducado') ? 'bad' : 'todo') : 'ok', 'Seguro', segMal.length ? `Falta o está caducado el seguro de: ${segMal.join(', ')}.` : 'Todos con seguro de accidentes y RC en vigor.');
+    add(sinAcept.length ? 'todo' : 'ok', 'Plan leído', sinAcept.length ? `Falta que acepten el plan (o lo vuelvan a aceptar tras un cambio): ${sinAcept.join(', ')}.` : 'Todos han leído y aceptado este plan.');
+    // niveles y menores por pareja
+    const grupos = {}; s.divers.forEach((d, i) => { const k = (d.p||'').trim(); if (k) (grupos[k] = grupos[k] || []).push(i); });
+    const flojas = Object.entries(grupos).filter(([k, g]) => g.every(i => nivelDe(s.divers[i]) <= 1) && g.some(i => s.divers[i].nivel)).map(([k]) => k);
+    const sinNivel = s.divers.filter(d => !d.nivel).map(d => d.n);
+    add(flojas.length ? 'warn' : sinNivel.length ? 'todo' : 'ok', 'Niveles', flojas.length ? `Pareja sin nadie por encima de B1E: ${flojas.join(', ')}. Mezcla niveles («Formar parejas»).` : sinNivel.length ? `Falta el nivel de: ${sinNivel.join(', ')}.` : 'Cada pareja mezcla niveles.');
+    const probMen = [];
+    s.divers.forEach((d, i) => { const l = est[i].menor; if (!l) return;
+      if (num(d.o2) > 21) probMen.push(`${d.n}: los menores solo pueden respirar aire`);
+      const lim = l.club === null ? l.ley : l.club;
+      if (depth > lim) probMen.push(`${d.n} (${d.edad} años): máximo ${lim} m${l.club !== null ? ' según el club; la ley permite ' + l.ley + ' m' : ''}`);
+      const g = grupos[(d.p||'').trim()] || [];
+      if (l.necesitaAdultoB3E && !g.some(j => j !== i && !limiteMenor(s.divers[j].edad) && nivelDe(s.divers[j]) >= 3)) probMen.push(`${d.n}: tiene que ir con un adulto B3E o superior`);
+    });
+    if (est.some(e => e.menor)) add(probMen.length ? 'bad' : 'ok', 'Menores', probMen.length ? probMen.join('; ') + '.' : 'Los menores cumplen profundidad, gas y acompañante.');
+    const faltanNdl = s.divers.some(d => !isFinite(num(d.ndl))) || !s.divers.length;
+    add(badNdl.length ? 'bad' : faltanNdl || !(tbm > 0) ? 'todo' : lowNdl.length ? 'warn' : 'ok', 'Sin deco', badNdl.length ? `El tiempo de fondo (${tbm} min) entra en deco para: ${badNdl.join(', ')}. Acorta el tiempo o sube de cota.` : faltanNdl || !(tbm > 0) ? 'Completa el sin-deco de todos los ordenadores y el tiempo de fondo.' : lowNdl.length ? `Muy justo: ${lowNdl.join(', ')}.` : `El más limitado tiene ${worstNdl} min; el plan usa ${tbm}.`);
+    add(badEnd.length ? 'bad' : isFinite(lowEnd) ? 'ok' : 'todo', 'Gas suficiente', badEnd.length ? `Llegarían por debajo de ${reserva} bar: ${badEnd.join(', ')}.` : isFinite(lowEnd) ? `Todos llegan con ${reserva} bar o más (el que menos, ${fmt(lowEnd)} bar).` : 'Faltan datos de botella o consumo.');
+    add(s.guiaIda && s.guiaVuelta && s.briefing ? 'ok' : 'todo', 'Guías', s.guiaIda && s.guiaVuelta && s.briefing ? `Ida: ${s.guiaIda} · Vuelta: ${s.guiaVuelta} · Briefing: ${s.briefing}.` : 'Falta decidir guía de ida, de vuelta o briefing.');
+    const nPar = Object.keys(grupos).length || Math.floor(s.divers.length / 2), nG = num(s.guias), need = guiasNecesarios(nPar);
+    if (s.sinExp !== false) add(!isFinite(nG) ? 'todo' : nG >= need ? 'ok' : 'bad', 'Guías por parejas', !isFinite(nG) ? `Indica cuántos guías subacuáticos van al agua: con ${nPar} parejas hacen falta ${need} (Decreto 10/2003 CV, anexo I, art. 8.4).` : nG >= need ? `${nG} guía(s) para ${nPar} parejas: cumple 1 por cada 3 parejas.` : `Con ${nPar} parejas hacen falta ${need} guías y hay ${nG} (1 por cada 3 parejas, Decreto 10/2003 CV, anexo I, art. 8.4).`);
+    else add('ok', 'Guías por parejas', 'Grupo organizado y con experiencia: no aplica la regla de 1 guía por cada 3 parejas. Al menos un guía de inmersión por salida (art. 8.2).');
+    const ex = exposicionGuia(state.dives.map(x => ({prof: x.prof, tfondo: x.tfondo})));
+    add(ex.total > ex.limite ? 'bad' : ex.total > ex.limite - 15 ? 'warn' : 'ok', 'Tiempo de los guías', `Las dos inmersiones suman unos ${Math.round(ex.total)} min de agua para quien guíe ambas; el máximo diario de guías e instructores es ${ex.limite} min (RD 550/2020, art. 20.2).`);
+    const eq = EQUIPO.filter(e => s.equipo[e]).length, pv = PREVIO.filter(e => s.previo[e]).length;
+    add(eq === EQUIPO.length ? 'ok' : 'todo', 'Equipo mínimo', `${eq} de ${EQUIPO.length} comprobados.`);
+    const equipoPendiente = s.divers.filter(d => !EQUIPO.every(k => d.equipo?.[k] === true)).map(d=>d.n);
+    add(equipoPendiente.length || !s.divers.length ? 'todo' : 'ok', 'Equipo declarado', equipoPendiente.length ? 'Falta confirmar material en las fichas de: '+equipoPendiente.join(', ')+'.' : s.divers.length ? 'Todos han declarado el equipo mínimo completo.' : 'Faltan las fichas de los buceadores.');
+    add(pv === PREVIO.length ? 'ok' : 'todo', 'Antes de saltar', `${pv} de ${PREVIO.length} comprobados.`);
+    const cnt = st => checks.filter(c => c.st === st).length;
+    $('msum').innerHTML = `<span style="color:var(--ok)">${cnt('ok')} bien</span><span style="color:var(--warn)">${cnt('warn')} ojo</span><span style="color:var(--bad)">${cnt('bad')} no</span><span style="color:var(--muted)">${cnt('todo')} falta</span>`;
+    $('checks').innerHTML = checks.map(c => `<div class="chk ${c.st}"><span class="pill">${{ok:'bien',warn:'ojo',bad:'no',todo:'falta'}[c.st]}</span><p><b>${c.label}.</b> ${esc(c.txt)}</p></div>`).join('');
+    // boxes
+    ['equipo','previo'].forEach(k => {
+      const list = k === 'equipo' ? EQUIPO : PREVIO, host = $(k);
+      if (host.childElementCount !== list.length) host.innerHTML = list.map((t, j) => `<label><input type="checkbox" id="${k}${j}" data-box="${k}" data-t="${esc(t)}"> ${esc(t)}</label>`).join('');
+      list.forEach((t, j) => { $(k+j).checked = !!s[k][t]; });
+    });
+    // whatsapp: siempre incluye las dos inmersiones de la jornada.
+    const whatsappDive = (ds, i) => {
+      ds = ds && typeof ds === 'object' ? ds : {};
+      const divers = Array.isArray(ds.divers) ? ds.divers : [];
+      const dpth = num(ds.prof), fondo = num(ds.tfondo), rsv = num(ds.reserva), rule = +ds.regla || 2;
+      const rumbo = num(ds.rumboIda), lines = [];
+      const pt = puntoDe(ds.punto) || {};
+      const recorrido = ds.ruta || pt.ruta || '';
+      const faltan = [], revisar = [];
+      lines.push(`*${i === 0 ? '1.ª' : '2.ª'} INMERSIÓN*${ds.fecha ? ' · ' + new Date(ds.fecha + 'T12:00').toLocaleDateString('es-ES') : ''}`);
+      if (ds.ejemplo) lines.push('DATOS DE EJEMPLO: sustituir por los del grupo.');
+      lines.push(`Punto: ${ds.punto} · Máx. ${fmt(dpth)} m · Fondo ${fmt(fondo)} min`);
+      if (i === 1 && num(ds.intervalo) > 0) lines.push(`Intervalo de superficie: ${fmt(num(ds.intervalo))} min`);
+      lines.push(`Rumbo ida ${isFinite(rumbo) ? rumbo + '°' : '—'} · vuelta ${isFinite(rumbo) ? (rumbo+180)%360 + '°' : '—'}`);
+      if (pt.coord || pt.tiempo || pt.dificultad) lines.push(`Ficha del punto: ${[pt.coord ? 'coord. ' + pt.coord : '', pt.tiempo ? 'recorrido ' + pt.tiempo + ' min' : '', pt.dificultad ? 'dificultad ' + pt.dificultad : ''].filter(Boolean).join(' · ')}`);
+      lines.push(`Recorrido: ${recorrido || 'pendiente de briefing'}`);
+      const alts = Object.entries(ds.alternativas || {}).filter(([k]) => k !== ds.punto);
+      if (alts.length) lines.push('Plan B: ' + alts.map(([k, a]) => `${k} (máx. ${isFinite(num(a.prof)) ? num(a.prof) + ' m' : '—'}, ${isFinite(num(a.tfondo)) ? num(a.tfondo) + ' min' : '—'})`).join(' · '));
+      lines.push(`Guía ida: ${ds.guiaIda || '—'} · vuelta: ${ds.guiaVuelta || '—'} · briefing: ${ds.briefing || '—'}`);
+      lines.push('');
+      divers.forEach(d => {
+        const o2 = num(d.o2), g = gas(d, dpth, fondo, isFinite(rsv) ? rsv : 50, rule);
+        const e = estadoFicha(d, ds), ficha = e.salud === 'apto' && e.seguro === 'ok' && e.acepta === 'ok' && EQUIPO.every(k => d.equipo?.[k] === true);
+        if (o2/100*pabs(dpth) > 1.4 + 1e-9) revisar.push(`${d.n}: gas incompatible con la profundidad`);
+        if (g && g.end < rsv) revisar.push(`${d.n}: gas por debajo de la reserva`);
+        if (fondo > num(d.ndl)) revisar.push(`${d.n}: supera el tiempo sin deco`);
+        lines.push(`• ${d.n}${d.nivel ? ' (' + d.nivel + ')' : ''}, pareja ${d.p || '—'}: ${o2 === 21 ? 'aire' : isFinite(o2) ? 'EAN' + fmt(o2) : 'gas pendiente'} · botella ${fmt(num(d.v))} L a ${fmt(num(d.p0))} bar · hasta ${isFinite(o2) ? Math.min(mod(o2),40) : '—'} m · sin deco ${d.ndl} min · media vuelta ${g ? fmt(Math.ceil(g.turn/10)*10) : '—'} bar · equipo ${EQUIPO.filter(k => d.equipo?.[k] === true).length}/${EQUIPO.length} · ficha ${ficha ? 'completa' : 'pendiente'}`);
+      });
+      lines.push('');
+      lines.push(`Regla de gas: ${rule === 3 ? 'tercios' : 'mitades'} · a superficie con ${fmt(rsv) } bar`);
+      lines.push('Subida a 9 m/min · parada de seguridad 3 min a 5 m');
+      lines.push('Sin deco programada. Si el ordenador entra en deco: avisar y cumplirla (máx. 10 min, RD 550/2020)');
+      lines.push('Botellas a 6 m solo para emergencias, no cuentan en el plan');
+      if (!isFinite(dpth)) faltan.push('profundidad');
+      if (!isFinite(fondo)) faltan.push('tiempo de fondo');
+      if (!isFinite(rumbo)) faltan.push('rumbo');
+      if (!isFinite(num(ds.reserva))) faltan.push('reserva');
+      if (!ds.guiaIda || !ds.guiaVuelta || !ds.briefing) faltan.push('asignar guías y briefing');
+      if (!divers.length) faltan.push('buceadores');
+      if (divers.some(d => !isFinite(num(d.ndl)))) faltan.push('sin-deco de todos los ordenadores');
+      if (i === 1 && !(num(ds.intervalo) > 0)) faltan.push('intervalo de superficie');
+      if (ds.tiempoAuto) lines.push('Tiempo automático: ' + tiempoAutomatico(ds).motivo);
+      if (faltan.length) lines.push('PENDIENTE: ' + faltan.join(', ') + '. Completar antes de enviar al grupo.');
+      if (revisar.length) lines.push('REVISAR: ' + revisar.join('; ') + '.');
+      return lines;
+    };
+    const L = ['*PLAN DE LA JORNADA · DOS INMERSIONES*'];
+    state.dives.forEach((dive, i) => { L.push(''); L.push(...whatsappDive(dive, i)); });
+    L.push('');
+    L.push(`Código del plan de las dos inmersiones (para la ficha): ${huellaJornada(state).toUpperCase()}`);
+    L.push('Ficha para rellenar desde el móvil: ' + enlaceFicha(state));
+    L.push('Rellena la ficha y envíala por WhatsApp al organizador, por privado.');
+    $('fichaMovil').href = enlaceFicha(state);
+    $('wa').textContent = L.join('\n');
+    save();
+  }
+  function esc(t){ return String(t ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  function invalidarNdl(dive){ dive.divers.forEach(d => { d.ndl = ''; }); }
+  function invalidarSucesiva(){
+    if (state.cur === 0) invalidarNdl(state.dives[1]);
+  }
+  function cargarPunto(s){
+    const pt = puntoDe(s.punto) || {};
+    s.prof = pt.profMax != null ? Math.min(pt.profMax, 40) : null;
+    s.ruta = pt.ruta || '';
+    s.rumboIda = pt.rumbo ?? null;
+    s.tiempoAuto = true;
+    invalidarNdl(s);
+    invalidarSucesiva();
+  }
+
+  document.addEventListener('input', e => {
+    const el = e.target, s = D();
+    if (el.dataset.f) {
+      const i = +el.dataset.i, d = s.divers[i];
+      const v = el.type === 'checkbox' ? el.checked : el.type === 'number' ? num(el.value) : el.value;
+      set(d, el.dataset.f, v);
+      if (el.dataset.f === 'salud.firmada') { d.salud.firmaFecha = el.checked ? new Date().toISOString() : ''; rebuildCard(i); }
+      else if (el.dataset.f.startsWith('salud.') && el.dataset.f !== 'salud.reco') { d.salud.fecha = hoy(); delete d.salud.resultado; d.salud.firmada = false; d.salud.firmaFecha = ''; }
+      save();
+      if (el.type === 'radio') { rebuildCard(i); }
+      render(); return;
+    }
+    if (el.dataset.acc) { const d = s.divers[+el.dataset.i]; d.acepta = el.checked ? { h: huellaJornada(state), fecha: new Date().toISOString() } : null; save(); rebuildCard(+el.dataset.i); render(); return; }
+    if (el.dataset.k) {
+      const d = s.divers[+el.dataset.i]; d[el.dataset.k] = el.type === 'number' ? num(el.value) : el.value;
+      if (el.dataset.k === 'o2') { d.ndl = ''; $('d'+el.dataset.i).value = ''; }
+      if (['o2','ndl','v','p0','sac'].includes(el.dataset.k)) invalidarSucesiva();
+    }
+    else if (el.dataset.box) { s[el.dataset.box][el.dataset.t] = el.checked; }
+    else if (el.id === 'sinExp') { s.sinExp = el.checked; }
+    else if (el.id === 'tiempoAuto') { s.tiempoAuto = el.checked; invalidarSucesiva(); }
+    else if (el.id === 'punto') {
+      s.alternativas = s.alternativas || {};
+      s.alternativas[s.punto] = { prof: s.prof, tfondo: s.tfondo, rumboIda: s.rumboIda, ruta: s.ruta };
+      s.punto = el.value;
+      const a = s.alternativas[s.punto], pt = puntoDe(s.punto) || {};
+      if (a) { Object.assign(s, a); invalidarNdl(s); } else cargarPunto(s);
+      invalidarSucesiva();
+      el.blur();
+    }
+    else if (['fecha','prof','tfondo','rumboIda','guiaIda','guiaVuelta','briefing','intervalo','reserva','regla','guias','ruta','viento'].includes(el.id)) {
+      s[el.id] = el.type === 'number' ? num(el.value) : el.value;
+      if (el.id === 'tfondo') s.tiempoAuto = false;
+      if (['prof','intervalo','fecha'].includes(el.id)) invalidarNdl(s);
+      if (['prof','tfondo','reserva','regla','fecha','intervalo'].includes(el.id)) invalidarSucesiva();
+    }
+    else return;
+    s.ejemplo = false; save(); render();
+  });
+  document.addEventListener('change', e => { if ((e.target.dataset.box || e.target.tagName === 'SELECT') && !e.target.dataset.k) e.target.dispatchEvent(new Event('input', {bubbles:true})); });
+  document.addEventListener('click', e => {
+    const t = e.target;
+    if (t.dataset.dive) { state.cur = +t.dataset.dive; save(); $('rows').innerHTML = ''; render(); }
+    if (t.id === 'usarPunto') { const s = D(); cargarPunto(s); s.ejemplo = false; render(); save(); }
+    if (t.dataset.exp) { const d = D().divers[+t.dataset.exp]; descargar(`ficha_${(d.n||'buceador').replace(/[^\w\u00C0-\u017F]+/g,'-')}.json`, {tipo:'ficha', version:1, buceador: d}); }
+    if (t.dataset.rm) { D().divers.splice(+t.dataset.rm, 1); D().ejemplo = false; save(); $('rows').innerHTML = ''; render(); }
+  });
+  $('add').addEventListener('click', () => { const s = D(); s.divers.push({n:'Buceador ' + (s.divers.length+1), p:'', o2:21, v:15, p0:200, sac:20, ndl:''}); s.ejemplo = false; save(); $('rows').innerHTML=''; render(); });
+  $('reset').addEventListener('click', () => { state.dives[state.cur] = state.cur === 0 ? ejemplo() : ejemplo2(); save(); $('rows').innerHTML=''; render(); });
+  $('mver').addEventListener('click', () => $('checks').scrollIntoView({behavior:'smooth', block:'start'}));
+  $('mcopy').addEventListener('click', () => { $('copy').click(); const b = $('mcopy'); b.textContent = 'Copiado'; setTimeout(() => b.textContent = 'Copiar plan', 2000); });
+  $('copy').addEventListener('click', () => {
+    const txt = $('wa').textContent;
+    const done = m => { $('copied').textContent = m; setTimeout(() => $('copied').textContent = '', 2500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => done('Copiado'), () => { selectWa(); done('Selecciónalo y copia'); });
+    else { selectWa(); done('Selecciónalo y copia'); }
+  });
+  function selectWa(){ const r = document.createRange(); r.selectNodeContents($('wa')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+  $('savef').addEventListener('click', () => {
+    const s = D(); const name = `plan_${(s.fecha||'sin-fecha')}_${(s.punto||'punto').replace(/[^\w\u00C0-\u017F]+/g,'-')}_inm${state.cur+1}.json`;
+    // Las respuestas de salud no salen del dispositivo: el plan guarda solo el resultado.
+    const copia = JSON.parse(JSON.stringify(s));
+    copia.divers.forEach((d, i) => { if (d.salud) { const e = estadoFicha(s.divers[i], s); d.salud = { resultado: e.resultado, fecha: d.salud.fecha, reco: d.salud.reco }; } });
+    descargar(name, {version:1, inmersion: state.cur+1, plan: copia});
+  });
+  function descargar(name, obj){
+    const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  $('impf').addEventListener('change', async e => {
+    const s = D(); let n = 0, malos = 0;
+    for (const f of e.target.files) {
+      try { const j = JSON.parse(await f.text()); if (j.tipo !== 'ficha' || !j.buceador) throw 0;
+        const b = j.buceador, k = s.divers.findIndex(d => (d.n||'').trim().toLowerCase() === (b.n||'').trim().toLowerCase());
+        if (k >= 0) s.divers[k] = Object.assign({}, s.divers[k], b, { p: s.divers[k].p }); else s.divers.push(b);
+        n++;
+      } catch(err) { malos++; }
+    }
+    e.target.value = ''; s.ejemplo = false; save(); $('rows').innerHTML = ''; render();
+    $('pairmsg').textContent = `Fichas importadas: ${n}` + (malos ? ` · ${malos} archivo(s) no eran fichas de la pizarra` : '') + '.';
+  });
+  function anadirFichas(lista){
+    const s = D(), h = huellaJornada(state), fondoPrimera = state.dives[0].tfondo; let n = 0;
+    lista.forEach(b => {
+      const codigoPlan = (b.planCodigo || '').toLowerCase(); delete b.planCodigo;
+      const referencia = (b.planReferencia || codigoPlan).toLowerCase(); delete b.planReferencia;
+      const inmersiones = Array.isArray(b.inmersiones) && b.inmersiones.length === 2 ? b.inmersiones : null;
+      delete b.inmersiones;
+      if (b.prueba && !/^\[PRUEBA\]/.test(b.n)) b.n = '[PRUEBA] ' + b.n;
+      b.acepta = codigoPlan && codigoPlan === h ? { h, fecha: b.aceptaFecha || new Date().toISOString() } : null; delete b.aceptaFecha;
+      (inmersiones ? state.dives : [s]).forEach((dive,i) => {
+        const datos = Object.assign({}, b);
+        if (inmersiones) {
+          ['o2','v','p0','sac'].forEach(k => { datos[k] = isFinite(num(inmersiones[i]?.[k])) ? num(inmersiones[i][k]) : null; });
+          datos.ndl = referencia === h && isFinite(num(inmersiones[i]?.ndl)) ? num(inmersiones[i].ndl) : '';
+        }
+        const k = dive.divers.findIndex(d => (d.n||'').trim().toLowerCase() === (datos.n||'').trim().toLowerCase());
+        if (k >= 0) dive.divers[k] = Object.assign({}, dive.divers[k], datos, { p:dive.divers[k].p, fija:dive.divers[k].fija });
+        else dive.divers.push(Object.assign({p:''}, datos));
+        dive.ejemplo = false;
+      });
+      n++;
+    });
+    // los que se piden mutuamente: misma letra y pareja apuntada
+    state.dives.forEach(dive => {
+      const usadas = new Set(dive.divers.map(d => (d.p||'').trim()).filter(Boolean));
+      parejasPedidas(dive.divers).forEach(([i,j]) => { if (dive.divers[i].fija && dive.divers[j].fija && dive.divers[i].p === dive.divers[j].p) return; const l = letraLibre(usadas); dive.divers[i].p = dive.divers[j].p = l; dive.divers[i].fija = dive.divers[j].fija = true; });
+    });
+    if (state.dives[0].tiempoAuto && tiempoAutomatico(state.dives[0]).tiempo !== fondoPrimera) invalidarNdl(state.dives[1]);
+    s.ejemplo = false; save(); if (document.activeElement) document.activeElement.blur(); $('rows').innerHTML = ''; render();
+    return n;
+  }
+  $('pastebtn').addEventListener('click', () => { $('pastebox').hidden = !$('pastebox').hidden; if (!$('pastebox').hidden) $('pastetxt').focus(); });
+  $('pasteok').addEventListener('click', () => {
+    const lista = leerCodigos($('pastetxt').value);
+    if (!lista.length) { $('pairmsg').textContent = 'No he encontrado ninguna ficha: cada mensaje tiene que llevar un código que empieza por FICHA-B3E:'; return; }
+    const pr = lista.filter(b => b.prueba).length, n = anadirFichas(lista);
+    $('pastetxt').value = ''; $('pastebox').hidden = true;
+    $('pairmsg').textContent = `Fichas añadidas: ${n}` + (pr ? ` (${pr} de prueba, marcadas como [PRUEBA])` : '') + '. Las que traían el código del plan actual quedan con el plan aceptado.';
+  });
+  // Archivo de declaraciones para que el guía o el centro las guarde (art. 8 RD 550/2020).
+  $('declbtn').addEventListener('click', () => {
+    const s = D(), f = s.fecha || hoy();
+    const fila = (txt, v) => `<tr><td>${esc(txt)}</td><td class="r ${v === 'si' ? 'si' : ''}">${v === 'si' ? 'Sí' : v === 'no' ? 'No' : '—'}</td></tr>`;
+    const bloques = s.divers.map(d => {
+      const sal = d.salud || {}, e = estadoFicha(d, s);
+      if (!sal.q1) return `<section><h2>${esc(d.n)}</h2><p>Resultado recibido: <b>${esc(e.resultado)}</b>${sal.fecha ? ' (' + esc(sal.fecha) + ')' : ''}. No hay respuestas detalladas en esta pizarra.</p></section>`;
+      let filas = '';
+      SALUD_PREG.forEach((t, k) => { const n = k + 1, c = SALUD_CUADRO[n]; filas += fila(n + '. ' + t, sal['q'+n]);
+        if (c && sal['q'+n] === 'si') SALUD_CUADROS[c].forEach((tt, m) => filas += fila('Cuadro ' + c + ': ' + tt, sal[c+(m+1)])); });
+      const res = { sin_afecciones: 'Sin afecciones declaradas', requiere_medico: 'Requiere reconocimiento médico anual' + (sal.reco ? ' (reconocimiento del ' + sal.reco + ')' : ' (sin fecha de reconocimiento)'), incompleto: 'Cuestionario incompleto' }[e.resultado];
+      return `<section><h2>${esc(d.n)}${d.prueba ? ' <span class="pr">PRUEBA</span>' : ''}</h2>
+        <p>Nivel: ${esc(d.nivel || '—')} · Fecha de las respuestas: ${esc(sal.fecha || '—')} · ${sal.firmada ? 'Declaración firmada el ' + esc(new Date(sal.firmaFecha).toLocaleString('es-ES')) : '<b>Sin firmar</b>'}</p>
+        <p>Resultado: <b>${esc(res)}</b></p><table>${filas}</table></section>`;
+    }).join('');
+    const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Declaraciones de salud ${esc(f)} ${esc(s.punto || '')}</title>
+<style>body{font:14px/1.45 system-ui,Segoe UI,sans-serif;max-width:800px;margin:24px auto;padding:0 16px;color:#111}h1{font-size:22px}h2{font-size:17px;margin:0 0 4px}section{border:1px solid #bbb;border-radius:6px;padding:12px;margin:14px 0;break-inside:avoid}table{border-collapse:collapse;width:100%;margin-top:6px}td{border-top:1px solid #ddd;padding:4px 6px;vertical-align:top}td.r{width:44px;text-align:center;font-weight:700}td.si{color:#b00}.pr{font-size:11px;background:#fe8;padding:1px 6px;border-radius:3px}p{margin:2px 0}</style></head><body>
+<h1>Declaraciones de salud · ${esc(s.punto || '')} · ${esc(new Date(f + 'T12:00').toLocaleDateString('es-ES'))}</h1>
+<p>Cuestionario del anexo I del Real Decreto 550/2020 (art. 8). Datos de salud: guárdalo solo el tiempo necesario y no lo compartas fuera del centro u organización responsable.</p>
+${bloques}<p style="color:#666;font-size:12px">Generado con la Pizarra de plan B3E v${window.PIZARRA_VERSION} el ${new Date().toLocaleString('es-ES')}.</p></body></html>`;
+    const blob = new Blob([html], {type:'text/html'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `declaraciones_salud_${f}_${(s.punto||'punto').replace(/[^\w\u00C0-\u017F]+/g,'-')}.html`; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    $('pairmsg').textContent = 'Declaraciones descargadas. Ábrelas en el navegador para imprimirlas o guardarlas en PDF.';
+  });
+  const LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const letraLibre = usadas => { for (const l of LETRAS) if (!usadas.has(l)) { usadas.add(l); return l; } let n = 1; while (usadas.has(String(n))) n++; usadas.add(String(n)); return String(n); };
+  $('addpair').addEventListener('click', () => {
+    const s = D(), usadas = new Set(s.divers.map(d => (d.p||'').trim()).filter(Boolean)), l = letraLibre(usadas), n = s.divers.length;
+    s.divers.push({n:'Buceador ' + (n+1), p:l, fija:true, o2:21, v:15, p0:200, sac:20, ndl:''}, {n:'Buceador ' + (n+2), p:l, fija:true, o2:21, v:15, p0:200, sac:20, ndl:''});
+    s.ejemplo = false; save(); $('rows').innerHTML=''; render();
+    $('pairmsg').textContent = `Pareja ${l} añadida: rellenad los dos nombres y fichas.`;
+  });
+  $('pair').addEventListener('click', () => {
+    const s = D(); const { fijos, grupos, sinPareja } = formarParejas(s.divers);
+    const enFija = new Set(fijos.flat());
+    s.divers.forEach((d, i) => { if (!enFija.has(i)) { d.p = ''; d.fija = false; } });
+    const usadas = new Set(fijos.map(g => (s.divers[g[0]].p||'').trim()));
+    grupos.forEach(g => { const l = letraLibre(usadas); g.forEach(i => s.divers[i].p = l); });
+    s.ejemplo = false; save(); if (document.activeElement) document.activeElement.blur(); $('rows').innerHTML = ''; render();
+    $('pairmsg').textContent = (fijos.length ? `Se respetan ${fijos.length} pareja(s) apuntada(s). ` : '') +
+      `Sueltos emparejados con criterio de curso (la ley solo exige ir en pareja): el de más nivel e inmersiones con el de menos${grupos.some(g => g.length === 3) ? '; con número impar queda un trío' : ''}. ` +
+      (sinPareja.length ? `Sin pareja posible: ${sinPareja.map(i => s.divers[i].n).join(', ')} (un menor necesita un adulto B3E o superior). ` : '') + 'Puedes cambiarlas a mano.';
+  });
+
+  $('openf').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader(); r.onload = () => { try { const j = JSON.parse(r.result); if (!j.plan || !Array.isArray(j.plan.divers)) throw 0; delete j.plan.planner; j.plan.equipo = j.plan.equipo || {}; j.plan.previo = j.plan.previo || {}; state.dives[state.cur] = j.plan; save(); if (document.activeElement) document.activeElement.blur(); $('rows').innerHTML=''; render(); } catch(err) { $('copied').textContent = 'Ese archivo no es un plan de la pizarra.'; } e.target.value=''; };
+    r.readAsText(f);
+  });
+  // Abre WhatsApp con el enlace de la ficha (código de las dos inmersiones ya puesto) para mandarlo al grupo.
+  function mandarFicha(){
+    const d1 = state.dives[0] || {}, fecha = d1.fecha ? new Date(d1.fecha + 'T12:00').toLocaleDateString('es-ES') : '';
+    const puntos = state.dives.map(d => d.punto).filter(Boolean).join(' y ');
+    const txt = [`Ficha para la salida${fecha ? ' del ' + fecha : ''}${puntos ? ' (' + puntos + ')' : ''}:`, enlaceFicha(state), '',
+      `Código del plan: ${huellaJornada(state).toUpperCase()} (ya viene puesto en el enlace).`,
+      'Rellenadla y, al acabar, pulsad «Enviar por WhatsApp» y mandádmela a mí por privado, no al grupo: lleva la declaración de salud.',
+      'Si no queréis meter datos reales, marcad el modo prueba de arriba.',
+      'La página no guarda nada en ningún servidor: solo prepara el mensaje.'].join('\n');
+    window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+  }
+  $('mandarFicha').addEventListener('click', mandarFicha);
+  $('mandarFicha2').addEventListener('click', mandarFicha);
+  $('ver').textContent = 'v' + window.PIZARRA_VERSION;
+  // App instalable (versión publicada): guarda una copia para usarla sin cobertura en el barco.
+  if (location.protocol === 'https:' && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  const net = () => { $('net').textContent = (navigator.onLine ? '● Con conexión' : '● Sin conexión') + ' · Modo offline: todo se calcula y se guarda en este dispositivo, no necesita internet.'; };
+  addEventListener('online', net); addEventListener('offline', net); net();
+  render();
+})();
+</script>
+
+</body>
+</html>
