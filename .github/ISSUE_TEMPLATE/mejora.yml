@@ -1,0 +1,37 @@
+name: Proponer una mejora
+description: Cuenta una idea para mejorar Plan y fichas de buceo. Solo ideas, no código.
+title: "Mejora: "
+labels: ["propuesta"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por proponer una mejora. **Escribe solo la idea**, con tus palabras: no adjuntes código, diseños ni archivos. El autor decide qué se incluye y lo programa él mismo.
+        **Esta propuesta es pública.** No pongas nombres, teléfonos, datos de salud ni ningún dato personal.
+  - type: textarea
+    id: que
+    attributes:
+      label: ¿Qué te gustaría que hiciera?
+      description: Descríbelo en pocas líneas.
+    validations:
+      required: true
+  - type: textarea
+    id: para
+    attributes:
+      label: ¿Para qué te serviría?
+      description: En qué momento lo usarías (al planificar, en el barco, al recoger las fichas…).
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versión que usas
+      description: Se rellena sola si vienes desde el programa.
+      placeholder: v1.15.0
+  - type: checkboxes
+    id: cesion
+    attributes:
+      label: Uso de tu propuesta
+      options:
+        - label: Acepto que el autor use esta idea libremente, sin compensación y sin obligación de incluirla. Es una idea, no código ni diseño.
+          required: true
