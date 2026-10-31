@@ -1,10 +1,10 @@
 {
-  "version": "1.30.0",
+  "version": "1.31.0",
   "fecha": "2026-10-31",
   "notas": [
-    "Historial de versiones dentro de la pizarra (al pie), generado desde este archivo con `node tools/build-ficha.mjs` (`tools/historial.mjs`); sin nombres de personas.",
-    "«Buscar actualizaciones»: compara la versión instalada con el `version.json` publicado en GitHub Pages (raíz y `/pizarra/`, con las novedades de esa versión). Comprobación automática una vez al día, desactivable; solo descarga ese archivo y no envía datos. En la app instalada, «Actualizar ahora» recarga la versión nueva; en la copia del ordenador indica usar `actualizar.cmd`, que mantiene la ruta y con ella los datos del navegador. Aviso «nueva vX» junto al número de versión y mensaje tras actualizar.",
-    "Declaraciones de salud de la jornada: un solo archivo con todas las inmersiones activas, cada buceador una vez (con las inmersiones en que participa), resumen, centro u organizador y responsable, base legal (RD 550/2020 art. 8 y anexo I), aviso de datos de salud (art. 9 RGPD) y espacio para firma. Opción «Solo el resultado» para entregar lo mínimo necesario. Aclara que la casilla «Declaro que mis respuestas son ciertas» no es una firma electrónica.",
-    "Ficha privada: «Descargar mi declaración» (archivo imprimible con el cuestionario, el resultado y el último reconocimiento médico)."
+    "Tipo de salida de la jornada: «Con centro o club» o «Por libre (sin centro)». Fuente: RD 550/2020 (texto consolidado del BOE), art. 8.1 (cada buceador responde de su salud), art. 8.4 (la declaración la exige el responsable del centro) y art. 18.1 y 18.4 (pareja, límites y seguro, para todo el buceo recreativo).",
+    "Por libre: la declaración de salud pasa a recomendable (aviso «ojo», no «falta»); no se aplican las reglas de centros del Decreto 10/2003 (guías por parejas) ni el tiempo diario de guías e instructores (art. 20.2); pareja incompleta y seguro que falta salen en rojo. El panel de declaraciones aconseja que cada uno guarde la suya y propone «Solo el resultado»; WhatsApp y el mensaje de la ficha lo dicen.",
+    "Corregido: se decía «el centro u organizador tiene que pedir la declaración»; el art. 8.4 solo lo exige al centro.",
+    "El plan guardado en archivo incluye el tipo de salida (`modo`); los planes antiguos se abren como «con centro»."
   ]
 }
