@@ -1,6 +1,6 @@
 // Service worker de la pizarra publicada (GitHub Pages). Lo genera tools/prepare-ficha-site.mjs.
 // Red primero (para recibir actualizaciones) y, sin cobertura, la copia guardada. No toca los datos: esos viven en localStorage.
-const CACHE = 'pizarra-b3e-1.27.0';
+const CACHE = 'pizarra-b3e-1.28.0';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('pizarra-b3e-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
