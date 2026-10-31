@@ -1,0 +1,10 @@
+{
+  "version": "1.30.0",
+  "fecha": "2026-10-31",
+  "notas": [
+    "Historial de versiones dentro de la pizarra (al pie), generado desde este archivo con `node tools/build-ficha.mjs` (`tools/historial.mjs`); sin nombres de personas.",
+    "«Buscar actualizaciones»: compara la versión instalada con el `version.json` publicado en GitHub Pages (raíz y `/pizarra/`, con las novedades de esa versión). Comprobación automática una vez al día, desactivable; solo descarga ese archivo y no envía datos. En la app instalada, «Actualizar ahora» recarga la versión nueva; en la copia del ordenador indica usar `actualizar.cmd`, que mantiene la ruta y con ella los datos del navegador. Aviso «nueva vX» junto al número de versión y mensaje tras actualizar.",
+    "Declaraciones de salud de la jornada: un solo archivo con todas las inmersiones activas, cada buceador una vez (con las inmersiones en que participa), resumen, centro u organizador y responsable, base legal (RD 550/2020 art. 8 y anexo I), aviso de datos de salud (art. 9 RGPD) y espacio para firma. Opción «Solo el resultado» para entregar lo mínimo necesario. Aclara que la casilla «Declaro que mis respuestas son ciertas» no es una firma electrónica.",
+    "Ficha privada: «Descargar mi declaración» (archivo imprimible con el cuestionario, el resultado y el último reconocimiento médico)."
+  ]
+}
