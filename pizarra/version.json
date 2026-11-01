@@ -1,8 +1,7 @@
 {
-  "version": "1.32.0",
+  "version": "1.32.1",
   "fecha": "2026-11-01",
   "notas": [
-    "Libro de mantenimiento: «Importar de un ordenador Garmin (.fit o .zip)». Lee el archivo de «Exportar original» de Garmin Connect (la app Garmin Dive no exporta archivos) en el propio dispositivo, sin enviarlo: fecha y hora, profundidad máxima y media, tiempo bajo el agua, mezcla, presiones del transmisor (si lo hay) y temperatura mínima. Lector propio y mínimo (`leerFIT` en los cálculos), con los números de mensaje y campo del perfil FIT público de Garmin; probado con un archivo sintético generado con el FIT SDK (`tests/fixtures/inmersion-sintetica.fit`).",
-    "Diario de inmersiones con datos: hora, profundidades, tiempo, O₂, botella, presiones, temperatura y consumo real en superficie (misma fórmula que la calculadora de consumo), con botón «Usar como mi consumo». No se importa dos veces la misma inmersión. El CSV del libro incluye las columnas nuevas."
+    "Importar de Garmin: la app Garmin Dive sí exporta cada inmersión como archivo .fit (comprobado por el usuario); se cambian las instrucciones. Se pueden elegir varios .fit a la vez: se anotan todos con el equipo marcado, sin duplicar los que ya estén. El selector de archivos ya no filtra por tipo, porque algunos móviles no reconocen la extensión .fit y no dejaban elegirla."
   ]
 }
