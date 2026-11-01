@@ -1,7 +1,7 @@
 {
-  "version": "1.33.0",
+  "version": "1.33.1",
   "fecha": "2026-11-01",
   "notas": [
-    "Compartir inmersiones desde otra app: la app instalada en el móvil (sitio público `/pizarra/`) se registra como destino de «Compartir» (`share_target` del manifiesto, Web Share Target). Al compartir un .fit desde Garmin Dive y elegir «Plan y fichas», el service worker guarda el archivo en una caché aparte (`compartido-b3e`), abre la ficha privada y, al meter el PIN, la inmersión se lee como si se hubiera elegido con el botón; después se borra. El archivo no sale del teléfono. Solo funciona con la app instalada (no con el archivo abierto en el ordenador)."
+    "App publicada: el manifiesto y los iconos van enlazados de forma estática en la copia de `/pizarra/` (antes se añadían con JavaScript al cargar). Así Chrome la reconoce como instalable desde el primer momento y puede instalarla como aplicación de Android, requisito para salir en «Compartir». Comprobado con la herramienta de instalabilidad de Chromium: sin errores. Brave en Android crea un acceso directo, no una aplicación, y no sale en «Compartir»."
   ]
 }
