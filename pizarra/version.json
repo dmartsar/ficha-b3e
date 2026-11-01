@@ -1,7 +1,9 @@
 {
-  "version": "1.33.1",
+  "version": "1.34.0",
   "fecha": "2026-11-01",
   "notas": [
-    "App publicada: el manifiesto y los iconos van enlazados de forma estática en la copia de `/pizarra/` (antes se añadían con JavaScript al cargar). Así Chrome la reconoce como instalable desde el primer momento y puede instalarla como aplicación de Android, requisito para salir en «Compartir». Comprobado con la herramienta de instalabilidad de Chromium: sin errores. Brave en Android crea un acceso directo, no una aplicación, y no sale en «Compartir»."
+    "«Mis inmersiones» entra en la ficha privada: cuaderno con estadísticas (inmersiones, días, profundidad máxima, tiempo bajo el agua, temperatura, consumo medio), lista por día con miniatura del perfil y detalle con gráfica de profundidad, subida más rápida en tramos de 30 s, tiempo entre 3 y 6,5 m al subir, intervalo en superficie, gas, consumo y visibilidad; punto, compañeros, visibilidad y notas editables. Todo cifrado con la ficha. Sustituye a la página aparte «Mis inmersiones.html».",
+    "Reloj conectado al PC: en la copia local, la ficha lee `Mis inmersiones/datos/fits.js` (lo genera `sincronizar.ps1` al enchufar el reloj) y ofrece añadir las inmersiones que falten, sin repetir y sin las de menos de 3 minutos salvo que se pidan. El equipo marcado solo se asigna a las inmersiones posteriores a su fecha de compra. Copia el punto, los compañeros, las notas y la visibilidad de la antigua página (`datos/extra.js` y lo escrito en ella). La versión online no busca esos archivos.",
+    "Lector .FIT: número de inmersión, fecha y hora locales del reloj (mensaje activity, campos 253 y 5), intervalo en superficie, perfil (una muestra cada 20 s como mucho), subida más rápida y tiempo de parada; descarta apnea. Comprobado con archivos reales de un Descent G1 frente al FIT SDK de Garmin y frente al lector anterior de «Mis inmersiones»."
   ]
 }
