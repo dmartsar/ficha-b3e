@@ -1,10 +1,8 @@
 {
-  "version": "1.31.0",
-  "fecha": "2026-10-31",
+  "version": "1.32.0",
+  "fecha": "2026-11-01",
   "notas": [
-    "Tipo de salida de la jornada: «Con centro o club» o «Por libre (sin centro)». Fuente: RD 550/2020 (texto consolidado del BOE), art. 8.1 (cada buceador responde de su salud), art. 8.4 (la declaración la exige el responsable del centro) y art. 18.1 y 18.4 (pareja, límites y seguro, para todo el buceo recreativo).",
-    "Por libre: la declaración de salud pasa a recomendable (aviso «ojo», no «falta»); no se aplican las reglas de centros del Decreto 10/2003 (guías por parejas) ni el tiempo diario de guías e instructores (art. 20.2); pareja incompleta y seguro que falta salen en rojo. El panel de declaraciones aconseja que cada uno guarde la suya y propone «Solo el resultado»; WhatsApp y el mensaje de la ficha lo dicen.",
-    "Corregido: se decía «el centro u organizador tiene que pedir la declaración»; el art. 8.4 solo lo exige al centro.",
-    "El plan guardado en archivo incluye el tipo de salida (`modo`); los planes antiguos se abren como «con centro»."
+    "Libro de mantenimiento: «Importar de un ordenador Garmin (.fit o .zip)». Lee el archivo de «Exportar original» de Garmin Connect (la app Garmin Dive no exporta archivos) en el propio dispositivo, sin enviarlo: fecha y hora, profundidad máxima y media, tiempo bajo el agua, mezcla, presiones del transmisor (si lo hay) y temperatura mínima. Lector propio y mínimo (`leerFIT` en los cálculos), con los números de mensaje y campo del perfil FIT público de Garmin; probado con un archivo sintético generado con el FIT SDK (`tests/fixtures/inmersion-sintetica.fit`).",
+    "Diario de inmersiones con datos: hora, profundidades, tiempo, O₂, botella, presiones, temperatura y consumo real en superficie (misma fórmula que la calculadora de consumo), con botón «Usar como mi consumo». No se importa dos veces la misma inmersión. El CSV del libro incluye las columnas nuevas."
   ]
 }
