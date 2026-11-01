@@ -1,7 +1,7 @@
 {
-  "version": "1.32.1",
+  "version": "1.33.0",
   "fecha": "2026-11-01",
   "notas": [
-    "Importar de Garmin: la app Garmin Dive sí exporta cada inmersión como archivo .fit (comprobado por el usuario); se cambian las instrucciones. Se pueden elegir varios .fit a la vez: se anotan todos con el equipo marcado, sin duplicar los que ya estén. El selector de archivos ya no filtra por tipo, porque algunos móviles no reconocen la extensión .fit y no dejaban elegirla."
+    "Compartir inmersiones desde otra app: la app instalada en el móvil (sitio público `/pizarra/`) se registra como destino de «Compartir» (`share_target` del manifiesto, Web Share Target). Al compartir un .fit desde Garmin Dive y elegir «Plan y fichas», el service worker guarda el archivo en una caché aparte (`compartido-b3e`), abre la ficha privada y, al meter el PIN, la inmersión se lee como si se hubiera elegido con el botón; después se borra. El archivo no sale del teléfono. Solo funciona con la app instalada (no con el archivo abierto en el ordenador)."
   ]
 }

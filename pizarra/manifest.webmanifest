@@ -25,5 +25,28 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "share_target": {
+    "action": "./compartir",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "files": [
+        {
+          "name": "archivos",
+          "accept": [
+            "*/*",
+            ".fit",
+            ".zip",
+            "application/octet-stream",
+            "application/vnd.ant.fit",
+            "application/fit",
+            "application/zip"
+          ]
+        }
+      ]
+    }
+  }
 }
