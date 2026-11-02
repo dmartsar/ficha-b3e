@@ -1,7 +1,7 @@
 {
-  "version": "1.35.1",
+  "version": "1.35.2",
   "fecha": "2026-11-02",
   "notas": [
-    "«Importar equipo» acepta también inmersiones (`diario` en el archivo `libro-equipo-b3e`), por ejemplo las pasadas de un cuaderno de papel: se añaden a «Mis inmersiones» sin equipo y sin repetir (misma fecha, hora y punto). El archivo puede llevar solo inmersiones."
+    "Importar inmersiones: dos inmersiones del mismo día y punto sin hora ya no se toman por repetidas si tienen distinto número."
   ]
 }
