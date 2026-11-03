@@ -1,10 +1,8 @@
 {
-  "version": "1.38.0",
+  "version": "1.38.1",
   "fecha": "2026-11-03",
   "notas": [
-    "Nuevo modo «Lo relleno yo», para cuando los compañeros no mandan su ficha. El modo de siempre, «Con las fichas de los compañeros», sigue igual.",
-    "La primera página es un formulario: fecha, punto, profundidad, entrada, rumbo, relevos y sus guías, quién da el briefing, reserva, regla de gas y los buceadores (nivel, pareja, O₂, botella, presión, consumo y sin deco). Tiene botones para emparejar a los que no tienen pareja mezclando niveles y para poner el mismo sin deco a todos.",
-    "Al aceptar el formulario, el plan sale relleno y ordenado por páginas: la inmersión, parejas y gas, relevos de guía, briefing (dos páginas), repaso de señales, comprobaciones con el equipo mínimo y «Antes de entrar al agua», y el mensaje para el grupo con «Copiar plan» y «Guardar plan». Se pasa de página con los botones, deslizando el dedo o con las flechas del teclado.",
-    "En este modo la pizarra no recoge fichas: ni salud, ni seguro, ni aceptación, ni enlace ni código en el mensaje. Con club, la comprobación dice que esas gestiones son del club (RD 550/2020, art. 8.4). Por libre, recuerda que cada uno tiene que llevar su seguro (art. 18.4) y conviene que tenga su declaración de salud (art. 8.1)."
+    "Repaso de señales con dibujo: cada una de las 19 señales lleva un pictograma propio, simplificado, en el briefing y en la página de señales de «Lo relleno yo». Son dibujos hechos para la pizarra, sin imágenes de terceros.",
+    "Seis señales llevan la marca «varía según la escuela», porque no se hacen igual en todos los cursos: cuánto aire, mitad del aire, reserva, respiro mal, calambre y parada de seguridad. Hay que repasar la del club."
   ]
 }
