@@ -1,8 +1,10 @@
 {
-  "version": "1.37.0",
+  "version": "1.38.0",
   "fecha": "2026-11-03",
   "notas": [
-    "Una pizarra nueva empieza con una inmersión; la segunda queda preparada y aparece al poner 2 en «Inmersiones del día». Las pizarras que ya tienen un número guardado lo conservan.",
-    "«Guardar plan en archivo» anota cuántas inmersiones tiene la jornada (`inmersiones`). Al abrir en la 1.ª inmersión un plan de una sola, la pizarra pasa a una inmersión. Los planes antiguos se abren igual que antes."
+    "Nuevo modo «Lo relleno yo», para cuando los compañeros no mandan su ficha. El modo de siempre, «Con las fichas de los compañeros», sigue igual.",
+    "La primera página es un formulario: fecha, punto, profundidad, entrada, rumbo, relevos y sus guías, quién da el briefing, reserva, regla de gas y los buceadores (nivel, pareja, O₂, botella, presión, consumo y sin deco). Tiene botones para emparejar a los que no tienen pareja mezclando niveles y para poner el mismo sin deco a todos.",
+    "Al aceptar el formulario, el plan sale relleno y ordenado por páginas: la inmersión, parejas y gas, relevos de guía, briefing (dos páginas), repaso de señales, comprobaciones con el equipo mínimo y «Antes de entrar al agua», y el mensaje para el grupo con «Copiar plan» y «Guardar plan». Se pasa de página con los botones, deslizando el dedo o con las flechas del teclado.",
+    "En este modo la pizarra no recoge fichas: ni salud, ni seguro, ni aceptación, ni enlace ni código en el mensaje. Con club, la comprobación dice que esas gestiones son del club (RD 550/2020, art. 8.4). Por libre, recuerda que cada uno tiene que llevar su seguro (art. 18.4) y conviene que tenga su declaración de salud (art. 8.1)."
   ]
 }
