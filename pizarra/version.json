@@ -1,11 +1,7 @@
 {
-  "version": "1.36.0",
+  "version": "1.36.1",
   "fecha": "2026-11-03",
   "notas": [
-    "Relevos de guía: el plan admite 2, 3 o 4 guías por inmersión. Reparte el tiempo de fondo en tramos iguales y marca en qué tramo cae el giro (mitad del tiempo o presión de media vuelta del primero que llegue). Calcula la presión orientativa de cada buceador en cada cambio con el modelo de gas de la hoja. Los planes de siempre (ida y vuelta) no cambian ni cambia su código. Es criterio del curso, no ley.",
-    "Briefing: guion que sale del plan (punto y condiciones, plan, relevos, gas, parejas, entrada y descenso, pérdida de compañero, qué hacer si algo va mal, subida y salida) y repaso de señales para marcar. Botón «Copiar guion del briefing» y comprobación «Briefing». Es una ayuda para quien lo da, no un procedimiento oficial.",
-    "Entrada desde barco o desde la costa. Desde la costa, la comprobación «El mar permite que la barca nos recoja» pasa a «El mar permite entrar y salir por la costa».",
-    "Nuevo punto «Calpe · Cala del Racó», con entrada desde la costa y los datos de la senda submarina: unos 120 m, hasta unos 5,5 m, rumbo de unos 180° por la pared de la izquierda. Fuentes: MACMA, «Senda submarina Cala del Racó», y Ayuntamiento de Calpe, ficha «Cala El Racó». La profundidad fuera de la senda queda sin dato verificado.",
-    "Nueva zona de previsión: Calpe (Peñón de Ifach)."
+    "Cala del Racó: profundidad máxima de 8 m y nivel mínimo B1E/OWD, los que fija el club GISED en su salida del 08/11/2026. Es el límite del club, no la profundidad del punto, y así lo dice la ficha."
   ]
 }
