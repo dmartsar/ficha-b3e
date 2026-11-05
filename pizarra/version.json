@@ -1,7 +1,7 @@
 {
-  "version": "1.39.1",
+  "version": "1.39.2",
   "fecha": "2026-11-05",
   "notas": [
-    "Una inmersión por defecto también en las pizarras que ya tenían dos: si la segunda (o las siguientes) siguen con los datos de ejemplo, es que no se han usado, y la jornada pasa a una. No se borra nada: al poner 2 en «Inmersiones del día» vuelve a aparecer. Si la segunda tiene datos tuyos, se mantiene."
+    "Pantalla de inicio: el plan va el primero, a todo lo ancho y destacado, con el resumen (punto, fecha, profundidad, tiempo y buceadores). En «Lo relleno yo» abre el plan por páginas; con fichas abre «Punto y ruta», y el resto de apartados siguen debajo."
   ]
 }
