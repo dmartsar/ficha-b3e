@@ -1,8 +1,8 @@
 {
-  "version": "1.38.1",
-  "fecha": "2026-11-03",
+  "version": "1.38.2",
+  "fecha": "2026-11-05",
   "notas": [
-    "Repaso de señales con dibujo: cada una de las 19 señales lleva un pictograma propio, simplificado, en el briefing y en la página de señales de «Lo relleno yo». Son dibujos hechos para la pizarra, sin imágenes de terceros.",
-    "Seis señales llevan la marca «varía según la escuela», porque no se hacen igual en todos los cursos: cuánto aire, mitad del aire, reserva, respiro mal, calambre y parada de seguridad. Hay que repasar la del club."
+    "La pizarra pide al navegador almacenamiento persistente (`navigator.storage.persist`), para que no borre sus datos cuando le falte espacio. No evita que se borren al limpiar los datos de navegación, al desinstalar la app o con «borrar datos al salir».",
+    "Si el navegador no lo concede, «Mi ficha privada» avisa de que conviene guardar de vez en cuando una copia cifrada de la ficha y el plan en archivo."
   ]
 }
