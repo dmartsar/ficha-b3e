@@ -1,9 +1,11 @@
 {
-  "version": "1.38.3",
+  "version": "1.39.0",
   "fecha": "2026-11-05",
   "notas": [
-    "Al cargar un archivo sale una ventana que dice si ha ido bien («Todo correcto», con lo cargado) o qué ha fallado. Vale para «Abrir plan», «Importar fichas», «Importar equipo o inmersiones» y «Abrir copia» de la ficha. Antes el resultado solo salía en un texto pequeño que en el móvil no se veía.",
-    "Corregido: en «Lo relleno yo», al abrir un plan el formulario seguía mostrando los datos anteriores. Ahora se rellena con el plan abierto.",
-    "Los selectores de archivo aceptan también los .json que el móvil guarda como texto o como archivo genérico."
+    "Pantalla de inicio con botones: la pizarra empieza con el menú y cada apartado se despliega al pulsar su botón. Se pueden tener varios abiertos y se pliegan pulsando otra vez. Los apartados son ficha privada, tipo de salida, plan (o punto, buceadores, equipo, antes de saltar, briefing, comprobaciones y mensaje) y «Más».",
+    "Cada botón lleva un resumen debajo (punto y fecha, número de buceadores, señales repasadas, comprobaciones pendientes…).",
+    "Botón flotante «Inicio» para volver al menú. «Ver todo en una página» recupera la vista larga de antes. Lo abierto y la vista elegida se recuerdan en el navegador.",
+    "Al elegir «Lo relleno yo» se abre el plan, y al volver a las fichas, «Punto y ruta». Los saltos a otro apartado (comprobaciones, declaración de salud…) lo abren solos.",
+    "Las reglas precargadas, la descripción y el enlace de mejoras pasan a «Más» para que el menú quede arriba."
   ]
 }
