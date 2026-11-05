@@ -1,8 +1,9 @@
 {
-  "version": "1.38.2",
+  "version": "1.38.3",
   "fecha": "2026-11-05",
   "notas": [
-    "La pizarra pide al navegador almacenamiento persistente (`navigator.storage.persist`), para que no borre sus datos cuando le falte espacio. No evita que se borren al limpiar los datos de navegación, al desinstalar la app o con «borrar datos al salir».",
-    "Si el navegador no lo concede, «Mi ficha privada» avisa de que conviene guardar de vez en cuando una copia cifrada de la ficha y el plan en archivo."
+    "Al cargar un archivo sale una ventana que dice si ha ido bien («Todo correcto», con lo cargado) o qué ha fallado. Vale para «Abrir plan», «Importar fichas», «Importar equipo o inmersiones» y «Abrir copia» de la ficha. Antes el resultado solo salía en un texto pequeño que en el móvil no se veía.",
+    "Corregido: en «Lo relleno yo», al abrir un plan el formulario seguía mostrando los datos anteriores. Ahora se rellena con el plan abierto.",
+    "Los selectores de archivo aceptan también los .json que el móvil guarda como texto o como archivo genérico."
   ]
 }
