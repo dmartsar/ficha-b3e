@@ -1,7 +1,12 @@
 {
-  "version": "1.39.2",
+  "version": "1.40.0",
   "fecha": "2026-11-05",
   "notas": [
-    "Pantalla de inicio: el plan va el primero, a todo lo ancho y destacado, con el resumen (punto, fecha, profundidad, tiempo y buceadores). En «Lo relleno yo» abre el plan por páginas; con fichas abre «Punto y ruta», y el resto de apartados siguen debajo."
+    "Avisos al pulsar los botones: sale abajo un mensaje breve con lo que se ha hecho («Buceador añadido», «Plan guardado en archivo…», «Copiado»…), si ya estaba hecho o qué ha fallado. Verde si va bien, naranja si ya estaba o falta algo y rojo si es un error. Se van solos.",
+    "Lo que los botones ya escribían en su texto de estado sale también como aviso, para que se vea en el móvil.",
+    "Si se repite algo que no cambia nada (añadir datos del punto que ya estaban, emparejar cuando ya están emparejados…), avisa: «Ya estaba hecho».",
+    "«Guardar plan en archivo»: si el plan no ha cambiado desde la última vez, avisa «Ya guardado» y solo descarga otra copia si se pulsa otra vez.",
+    "«Copiar plan» y «Copiar guion del briefing»: si el texto es el mismo que la última vez, lo dice.",
+    "También avisan el cambio de tipo de salida, de modo y de número de inmersiones."
   ]
 }
