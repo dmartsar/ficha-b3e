@@ -1,7 +1,7 @@
 {
-  "version": "1.43.1",
+  "version": "1.43.2",
   "fecha": "2026-11-07",
   "notas": [
-    "«Avisar al guía a (bar)»: si el guía no fija otra presión, se avisa a 120 bar desde barco y a 100 bar desde la costa (criterio del club, indicado por el autor el 07/11/2026; no es ley). Sustituye a la media vuelta como valor por defecto. Sale en la tarjeta de cada buceador, en el briefing y en el mensaje de WhatsApp."
+    "Plan por páginas: los botones «Anterior» y «Siguiente» pasan abajo, al terminar el texto de cada página. Al cambiar de página, la pizarra vuelve al principio de la nueva."
   ]
 }
