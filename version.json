@@ -1,11 +1,7 @@
 {
-  "version": "1.40.1",
-  "fecha": "2026-11-05",
+  "version": "1.40.2",
+  "fecha": "2026-11-07",
   "notas": [
-    "El ordenador se actualiza solo, igual que el móvil, con `tools/abrir-pizarra.cmd` (pedido por el autor el 05/11/2026). El acceso directo del escritorio lo ejecuta:",
-    "Si hay conexión, descarga la versión publicada en GitHub Pages (pizarra, ficha y version.json) y la deja en la misma ruta, `Descargas\\Pizarra_plan_B3E.html`, para que el navegador conserve planes y ficha. Guarda la anterior como `Pizarra_plan_B3E.anterior.html`.",
-    "Sin conexión, abre la que hay.",
-    "Solo descarga de `dmartsar.github.io/ficha-b3e`, con `curl.exe` de Windows, y no envía datos.",
-    "El aviso de versión nueva en el ordenador explica que basta con volver a abrir la pizarra con ese acceso directo."
+    "Plan por páginas («Lo relleno yo») más legible en el móvil: letra base más grande y botones A− / A+ para ampliarla hasta el 175 %. El tamaño se recuerda en ese dispositivo; en el móvil empieza al 115 %."
   ]
 }
