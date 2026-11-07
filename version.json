@@ -1,7 +1,7 @@
 {
-  "version": "1.40.2",
+  "version": "1.41.0",
   "fecha": "2026-11-07",
   "notas": [
-    "Plan por páginas («Lo relleno yo») más legible en el móvil: letra base más grande y botones A− / A+ para ampliarla hasta el 175 %. El tamaño se recuerda en ese dispositivo; en el móvil empieza al 115 %."
+    "Nuevo «Leer en grande» en el briefing: vista a pantalla completa para leer el guion en voz alta desde el móvil, de pie y con sol. Un paso por pantalla (anterior y siguiente grandes, «Paso 2 de 10», deslizar o flechas del teclado, Esc para cerrar), texto casi blanco sobre fondo casi negro y letra de 5 tamaños (A− / A+, se recuerda en el dispositivo). El repaso de señales es el último paso, con los dibujos grandes y las mismas casillas que la tarjeta del briefing. Mientras está abierta pide al navegador que no apague la pantalla (si no puede, lo avisa). También hay botón en las páginas de briefing y señales de «Lo relleno yo». No cambia ninguna regla ni cálculo ni el formato de los planes guardados."
   ]
 }
