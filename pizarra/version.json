@@ -1,7 +1,9 @@
 {
-  "version": "1.42.0",
+  "version": "1.43.0",
   "fecha": "2026-11-07",
   "notas": [
-    "Letra más grande en toda la pizarra en el móvil: arriba, bajo el título, hay botones «Letra A− / A+» que amplían todo (textos, casillas, botones y el plan por páginas) en 5 tamaños, del 100 % al 160 %. En el móvil empieza al 130 %; en el ordenador, al 100 %. El tamaño se recuerda en cada dispositivo. «Leer en grande» sigue con su propio tamaño. No cambia ninguna regla ni cálculo ni el formato de los planes guardados."
+    "Letra todavía más grande en el móvil: empieza al 160 % y «Letra A+» llega al 200 % (en el ordenador sigue empezando al 100 %). Con la letra grande, los textos y botones largos parten línea y las rejillas se estrechan, para que no aparezca scroll horizontal.",
+    "Gas: nueva casilla «Avisar al guía a (bar)», en el plan y en el formulario de «Lo relleno yo». Si el guía no fija una presión, cada buceador avisa al llegar a su media vuelta (redondeada hacia arriba a 10 bar). Sale en la tarjeta de cada buceador, en el plan por páginas, en el briefing («Avisad al guía al llegar a…; y otra vez a la reserva: se sube») y en el mensaje de WhatsApp. Es criterio del curso, no ley. No cambia el código del plan.",
+    "Señales redibujadas: manos con dedos articulados, uñas y pliegues, y el movimiento de cada señal (subir, bajar, balanceo de «algo va mal», tocar el pecho, cortar en el cuello, abrir y cerrar la mano en el calambre…). Siguen siendo dibujos propios y orientativos; si el sistema pide reducir el movimiento, quedan quietas."
   ]
 }
