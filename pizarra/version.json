@@ -1,7 +1,12 @@
 {
-  "version": "1.43.2",
+  "version": "1.44.0",
   "fecha": "2026-11-07",
   "notas": [
-    "Plan por páginas: los botones «Anterior» y «Siguiente» pasan abajo, al terminar el texto de cada página. Al cambiar de página, la pizarra vuelve al principio de la nueva."
+    "Nuevo apartado «Gráficas y esquema» (en el menú de inicio y en los dos modos):",
+    "Perfil previsto: profundidad frente al tiempo con el mismo modelo de la pizarra (bajada 18 m/min, fondo a la profundidad máxima, subida 9 m/min, parada de 3 min a 5 m).",
+    "Aire previsto de cada buceador: presión frente al tiempo, con las líneas de aviso al guía y de reserva, el minuto aproximado del aviso y la presión de salida. La curva termina exactamente donde dice el cálculo de gas.",
+    "Después de bucear: «comparar con mi reloj» lee el .fit (o el .zip de «Exportar original» de Garmin) en el dispositivo y dibuja el perfil real encima del previsto, con profundidad máxima, tiempo, subida más rápida, parada y presiones del transmisor si las hay. No se guarda ni se envía.",
+    "Esquema del punto: corte del fondo con la entrada (barco con fondeo o costa), las profundidades de la fuente del punto («sin dato verificado» si no hay), el máximo del plan y los rumbos de ida y vuelta. Orientativo y sin escala horizontal; no es una carta náutica.",
+    "Cálculos nuevos con pruebas: perfilPlan, curvaPresion y minutoEnPresion."
   ]
 }
