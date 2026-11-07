@@ -1,7 +1,7 @@
 {
-  "version": "1.41.0",
+  "version": "1.42.0",
   "fecha": "2026-11-07",
   "notas": [
-    "Nuevo «Leer en grande» en el briefing: vista a pantalla completa para leer el guion en voz alta desde el móvil, de pie y con sol. Un paso por pantalla (anterior y siguiente grandes, «Paso 2 de 10», deslizar o flechas del teclado, Esc para cerrar), texto casi blanco sobre fondo casi negro y letra de 5 tamaños (A− / A+, se recuerda en el dispositivo). El repaso de señales es el último paso, con los dibujos grandes y las mismas casillas que la tarjeta del briefing. Mientras está abierta pide al navegador que no apague la pantalla (si no puede, lo avisa). También hay botón en las páginas de briefing y señales de «Lo relleno yo». No cambia ninguna regla ni cálculo ni el formato de los planes guardados."
+    "Letra más grande en toda la pizarra en el móvil: arriba, bajo el título, hay botones «Letra A− / A+» que amplían todo (textos, casillas, botones y el plan por páginas) en 5 tamaños, del 100 % al 160 %. En el móvil empieza al 130 %; en el ordenador, al 100 %. El tamaño se recuerda en cada dispositivo. «Leer en grande» sigue con su propio tamaño. No cambia ninguna regla ni cálculo ni el formato de los planes guardados."
   ]
 }
