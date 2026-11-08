@@ -1,9 +1,7 @@
 {
-  "version": "1.46.0",
+  "version": "1.47.0",
   "fecha": "2026-11-08",
   "notas": [
-    "Linux: `actualizar.sh` (equivale a `actualizar.cmd`), `tools/abrir-pizarra.sh` (equivale al acceso directo de Windows: con conexión descarga la versión publicada y sin conexión abre la que hay, siempre en la misma ruta de Descargas), `tools/sync-local.sh` y `tools/instalar-linux.sh`, que crea el acceso «Pizarra B3E» en el menú de aplicaciones y en el Escritorio. Usan las carpetas del usuario (Descargas, Escritorio) aunque estén en otro idioma.",
-    "El aviso de versión nueva explica cómo actualizar en Linux cuando la pizarra se abre allí; los avisos de navegador citan también Firefox.",
-    "Pruebas de interfaz: Edge en Windows y Chrome en Linux, o el navegador que se indique. Saltos de línea fijados por tipo de script (CRLF en `.cmd`, LF en `.sh`)."
+    "«Gráficas y esquema»: nuevo «El punto en 3D», un bloque del fondo que se gira arrastrando con el dedo o el ratón (y con «Girar» y «Norte arriba»). Lleva la entrada (barco con fondeo o costa), la superficie, las isóbatas cada 5 m, el plano del máximo del plan, los rumbos de ida y vuelta y el norte, orientado con el rumbo de ida. Se dibuja solo con los datos del punto (profundidad mínima y máxima de su fuente): entre ellas el fondo es una rampa suave y el relieve vertical está exagerado; no se dibujan rocas, posidonia ni pecios inventados. Sin librerías externas. El corte de siempre sigue debajo."
   ]
 }
