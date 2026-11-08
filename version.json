@@ -1,12 +1,7 @@
 {
-  "version": "1.44.0",
-  "fecha": "2026-11-07",
+  "version": "1.45.0",
+  "fecha": "2026-11-08",
   "notas": [
-    "Nuevo apartado «Gráficas y esquema» (en el menú de inicio y en los dos modos):",
-    "Perfil previsto: profundidad frente al tiempo con el mismo modelo de la pizarra (bajada 18 m/min, fondo a la profundidad máxima, subida 9 m/min, parada de 3 min a 5 m).",
-    "Aire previsto de cada buceador: presión frente al tiempo, con las líneas de aviso al guía y de reserva, el minuto aproximado del aviso y la presión de salida. La curva termina exactamente donde dice el cálculo de gas.",
-    "Después de bucear: «comparar con mi reloj» lee el .fit (o el .zip de «Exportar original» de Garmin) en el dispositivo y dibuja el perfil real encima del previsto, con profundidad máxima, tiempo, subida más rápida, parada y presiones del transmisor si las hay. No se guarda ni se envía.",
-    "Esquema del punto: corte del fondo con la entrada (barco con fondeo o costa), las profundidades de la fuente del punto («sin dato verificado» si no hay), el máximo del plan y los rumbos de ida y vuelta. Orientativo y sin escala horizontal; no es una carta náutica.",
-    "Cálculos nuevos con pruebas: perfilPlan, curvaPresion y minutoEnPresion."
+    "Briefing: nuevo paso «Control de la flotabilidad», entre la entrada y la pérdida de compañero (también en el plan por páginas y en «Leer en grande»): prueba de lastre al entrar, bajada controlada hasta quedar neutro antes del fondo, neutro y horizontal sin tocar el fondo (desde la costa, tampoco la posidonia), purgar al subir y parada a 5 m neutro sin agarrarse. Dice cuántos kilos de aire pesa de menos la botella al llegar a la reserva, con la botella y la presión de cada buceador (masaAireGastado, 1,2 g/L). Buena práctica del curso, no una norma."
   ]
 }
