@@ -1,7 +1,9 @@
 {
-  "version": "1.45.0",
+  "version": "1.46.0",
   "fecha": "2026-11-08",
   "notas": [
-    "Briefing: nuevo paso «Control de la flotabilidad», entre la entrada y la pérdida de compañero (también en el plan por páginas y en «Leer en grande»): prueba de lastre al entrar, bajada controlada hasta quedar neutro antes del fondo, neutro y horizontal sin tocar el fondo (desde la costa, tampoco la posidonia), purgar al subir y parada a 5 m neutro sin agarrarse. Dice cuántos kilos de aire pesa de menos la botella al llegar a la reserva, con la botella y la presión de cada buceador (masaAireGastado, 1,2 g/L). Buena práctica del curso, no una norma."
+    "Linux: `actualizar.sh` (equivale a `actualizar.cmd`), `tools/abrir-pizarra.sh` (equivale al acceso directo de Windows: con conexión descarga la versión publicada y sin conexión abre la que hay, siempre en la misma ruta de Descargas), `tools/sync-local.sh` y `tools/instalar-linux.sh`, que crea el acceso «Pizarra B3E» en el menú de aplicaciones y en el Escritorio. Usan las carpetas del usuario (Descargas, Escritorio) aunque estén en otro idioma.",
+    "El aviso de versión nueva explica cómo actualizar en Linux cuando la pizarra se abre allí; los avisos de navegador citan también Firefox.",
+    "Pruebas de interfaz: Edge en Windows y Chrome en Linux, o el navegador que se indique. Saltos de línea fijados por tipo de script (CRLF en `.cmd`, LF en `.sh`)."
   ]
 }
