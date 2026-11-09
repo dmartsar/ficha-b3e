@@ -1,9 +1,8 @@
 {
-  "version": "1.48.0",
+  "version": "1.49.0",
   "fecha": "2026-11-09",
   "notas": [
-    "Las inmersiones del reloj se anotan solas en «Mis inmersiones» de la ficha privada (pedido por el autor el 09/11/2026): al abrir la ficha en la copia del ordenador, las que haya en «Mis inmersiones/datos/fits.js» y aún no estén se añaden sin pulsar nada, con su perfil, profundidad, tiempo y consumo si hay presiones. Se añaden sin equipo marcado (se marca luego en cada una). No se duplican y una inmersión borrada a mano no vuelve. Las de menos de 3 minutos siguen siendo opcionales.",
-    "Los scripts del reloj (Windows y Linux) dejan una copia de esos datos junto a la pizarra (Descargas/Mis inmersiones/datos) cuando la carpeta «Mis inmersiones» está en otro sitio, como el disco compartido. Quedan en el repositorio en mis-inmersiones-windows y mis-inmersiones-linux.",
-    "Corregido: «Abrir mi ficha en otra ventana» podía mostrar la ventana en blanco si en el menú de inicio no estaba desplegada «Mi ficha privada»."
+    "Móvil: «Importar de un ordenador Garmin» acepta también el archivo fits.js que generan los scripts del reloj, con todas sus inmersiones; se añaden de una vez las que falten, sin duplicados. El teléfono no ve la carpeta del reloj, así que es la forma de llevarlas allí.",
+    "Scripts del reloj (Windows y Linux): opción NUBE / $Nube en configuracion.sh / configuracion.ps1 para dejar una copia de fits.js en una carpeta que llegue al móvil, como Google Drive. Vacía por defecto: no se envía nada a ningún sitio si no se configura."
   ]
 }
