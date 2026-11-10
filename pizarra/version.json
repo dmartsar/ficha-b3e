@@ -1,8 +1,10 @@
 {
-  "version": "1.49.0",
+  "version": "1.50.0",
   "fecha": "2026-11-09",
   "notas": [
-    "Móvil: «Importar de un ordenador Garmin» acepta también el archivo fits.js que generan los scripts del reloj, con todas sus inmersiones; se añaden de una vez las que falten, sin duplicados. El teléfono no ve la carpeta del reloj, así que es la forma de llevarlas allí.",
-    "Scripts del reloj (Windows y Linux): opción NUBE / $Nube en configuracion.sh / configuracion.ps1 para dejar una copia de fits.js en una carpeta que llegue al móvil, como Google Drive. Vacía por defecto: no se envía nada a ningún sitio si no se configura."
+    "Mi ficha privada por secciones: pestañas «Datos y salud», «Mi equipo», «Mis inmersiones» y «Mantenimiento», en vez de una sola columna larga. La pestaña activa se recuerda en el dispositivo y los avisos de caducidad siguen arriba, siempre visibles.",
+    "Libro de mantenimiento: ahora es una pestaña propia y se encuentra a la primera.",
+    "Marcar el equipo usado desde cada inmersión: el detalle de «Mis inmersiones» trae las casillas de las piezas, y cada pieza del libro muestra en cuántas inmersiones se ha llevado y las últimas fechas. Las que llegan del reloj ya no se quedan con «sin marcar» para siempre.",
+    "Copiados los datos del plan al diario: al anotar una inmersión con la misma fecha del plan (a mano, del reloj o con «Fecha y punto del plan») se rellenan solos los compañeros según las parejas del día (el de tu misma pareja; si no hay, el resto), y también la profundidad, el tiempo de fondo, el gas, la botella y la presión de carga de tu ficha en el plan. «Lo mismo que la última vez» copia también los compañeros. Todo siempre editable y solo rellena lo que falte."
   ]
 }
