@@ -1,9 +1,7 @@
 {
-  "version": "1.51.0",
+  "version": "1.51.1",
   "fecha": "2026-11-12",
   "notas": [
-    "Mi ficha privada, «Datos y salud»: nuevo apartado «Mis titulaciones y certificados». «Añadir desde archivo (PDF o foto)» guarda el certificado y, si es un PDF de FEDAS, lee solo el nombre de la titulación, el número y la fecha de emisión (comprobado con certificados de Soporte vital básico y Administración de oxígeno). Si es el título de buceo y la ficha no tenía titulación, rellena también nivel, agencia, número y fecha. No guarda el nombre ni el NIF que trae el certificado. También se puede añadir a mano.",
-    "Los archivos se guardan cifrados con el PIN de la ficha (AES-GCM, la misma clave), en el navegador (IndexedDB), y «Ver» los descifra y los abre. La copia cifrada de la ficha los incluye y «Abrir copia» los recupera.",
-    "Si una titulación tiene fecha de caducidad, sale en los avisos de arriba como el seguro o la licencia."
+    "Titulaciones: reconoce el nivel en los certificados de FEDAS que lo escriben con número («Buceador 3 estrellas», número con /P3/), y el título de buceo de nivel más alto pasa a la titulación de arriba aunque ya hubiera otro (al cargar B2E y B3E queda B3E). Comprobado con cinco certificados reales de FEDAS: Buceador 2 y 3 estrellas, Salvamento y rescate, Soporte vital básico y Administración de oxígeno."
   ]
 }
