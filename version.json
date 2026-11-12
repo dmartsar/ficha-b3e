@@ -1,7 +1,8 @@
 {
-  "version": "1.51.1",
+  "version": "1.52.0",
   "fecha": "2026-11-12",
   "notas": [
-    "Titulaciones: reconoce el nivel en los certificados de FEDAS que lo escriben con número («Buceador 3 estrellas», número con /P3/), y el título de buceo de nivel más alto pasa a la titulación de arriba aunque ya hubiera otro (al cargar B2E y B3E queda B3E). Comprobado con cinco certificados reales de FEDAS: Buceador 2 y 3 estrellas, Salvamento y rescate, Soporte vital básico y Administración de oxígeno."
+    "El equipo que escribes en «Mi equipo» (ordenador, regulador, chaleco, traje y botella) pasa solo al libro de mantenimiento y aparece en cada inmersión para marcarlo. Antes solo salían las piezas añadidas a mano en «Mantenimiento», y con «Mi equipo» rellenado no había nada que marcar. Si cambias el texto, la pieza se renombra mientras no la hayas editado en el libro; su historial se conserva.",
+    "Mis inmersiones (Windows): si Windows no deja abrir Subsurface (Control inteligente de aplicaciones), se anota en el registro y se sigue; las inmersiones y la copia para el móvil ya se han hecho antes."
   ]
 }
