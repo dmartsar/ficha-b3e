@@ -1,7 +1,7 @@
 {
-  "version": "1.52.1",
-  "fecha": "2026-11-12",
+  "version": "1.53.0",
+  "fecha": "2026-11-15",
   "notas": [
-    "Al quitar del libro una pieza que venía de «Mi equipo», ya no vuelve a aparecer sola (antes se volvía a crear al abrir la ficha); solo vuelve si cambias ese texto en «Mi equipo». El recuento de piezas de cada inmersión ya no cuenta las quitadas."
+    "Mi documentación en el móvil: «Enseñar mi documentación» muestra tus titulaciones a pantalla completa (datos y foto), también sin conexión, para el centro o el barco. Cada titulación admite una foto del carné además del PDF («Añadir foto»), y hay un botón para hacerla con la cámara. Las fotos se reducen al guardarlas y van, cifradas, en la copia de la ficha. En el móvil el PDF ya no se descarga al pulsar «Ver»: se descarga solo si lo pides."
   ]
 }
