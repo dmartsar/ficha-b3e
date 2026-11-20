@@ -1,7 +1,7 @@
 {
-  "version": "1.53.0",
-  "fecha": "2026-11-15",
+  "version": "1.54.0",
+  "fecha": "2026-11-21",
   "notas": [
-    "Mi documentación en el móvil: «Enseñar mi documentación» muestra tus titulaciones a pantalla completa (datos y foto), también sin conexión, para el centro o el barco. Cada titulación admite una foto del carné además del PDF («Añadir foto»), y hay un botón para hacerla con la cámara. Las fotos se reducen al guardarlas y van, cifradas, en la copia de la ficha. En el móvil el PDF ya no se descarga al pulsar «Ver»: se descarga solo si lo pides."
+    "«Traer de otra copia» (Mis titulaciones y certificados): pasa al móvil la documentación cargada en el PC (titulaciones con su PDF y su foto) desde una copia cifrada, sin sustituir la ficha del móvil. Pide el PIN de la copia, vuelve a cifrar los archivos con el de esta ficha y no repite las titulaciones que ya están."
   ]
 }
